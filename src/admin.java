@@ -12,8 +12,8 @@ public class admin {
     public void viewCustomer() {
 
         // This function allows admin to view the details of all customers registered in the system.
-        // Details of customers follows from customer.java
-        // The details of each customer which are generated from registration are stored in a json file and are -
+        // Details of customers follows from customerData.java
+        // The details of each customerData which are generated from registration are stored in a json file and are -
         // - retrieved in this java module.
 
     }
@@ -21,14 +21,14 @@ public class admin {
     public void viewShop() {
 
         // This function allows admin to view the details of all shops within the system.
-        // Details of customers follows from shop.java
-        // The details of each shop are stored in a json file and are retrieved in this java module.
+        // Details of customers follows from shopData.java
+        // The details of each shopData are stored in a json file and are retrieved in this java module.
 
     }
 
     public void flagCustomer() {
 
-        // This function allows admin to flag a customer as a positive case of CoViD-19.
+        // This function allows admin to flag a customerData as a positive case of CoViD-19.
         // With this function deployed, the flagShop() function automatically deploys as well.
 
     }
@@ -36,8 +36,8 @@ public class admin {
     public void flagShop() {
 
         // This function is an extension of the function flagCustomer(). NOTE : DO NOT ATTEMPT TO RUN ON ITS OWN!
-        // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
-        // - flagging anyone who are considered close contacts (within the regulations set in customer class) as -
+        // This function allows admin to flag a shopData as a zone of CoViD-19 positive cases, thus automatically -
+        // - flagging anyone who are considered close contacts (within the regulations set in customerData class) as -
         // - CoViD-19 positive cases.
 
     }
