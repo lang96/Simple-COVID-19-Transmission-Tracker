@@ -35,9 +35,18 @@ public class admin {
 
     public void flagShop() {
 
+        // This function is an extension of the function flagCustomer(). NOTE : DO NOT ATTEMPT TO RUN ON ITS OWN!
         // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
         // - flagging anyone who are considered close contacts (within the regulations set in customer class) as -
-        // CoViD-19 positive cases.
+        // - CoViD-19 positive cases.
+
+    }
+
+    public void addVisit() {
+
+        // This function allows admin to deploy an additional feature in which 30 random visits are added into the -
+        // - master visit history. These visits are generated using the existing list of customers and shops from -
+        // - application data files (json).
 
     }
 
