@@ -31,6 +31,8 @@ public class admin {
             JSONArray customer = (JSONArray) visit.get("customerName");
             JSONArray shop = (JSONArray) visit.get("shopName");
 
+            // Table output
+
             System.out.printf("| %-2s | ", "No");
             System.out.printf("%-10s | ", "Date");
             System.out.printf("%-8s | ", "Time");
@@ -82,6 +84,8 @@ public class admin {
             JSONArray phoneNum = (JSONArray) customer.get("phoneNum");
             JSONArray status = (JSONArray) customer.get("status");
 
+            // Table output
+
             System.out.printf("| %-2s | ", "No");
             System.out.printf("%-20s | ", "Name");
             System.out.printf("%-11s | ", "Phone");
@@ -130,6 +134,8 @@ public class admin {
             JSONArray manager = (JSONArray) shop.get("manager");
             JSONArray status = (JSONArray) shop.get("status");
 
+            // Table output
+
             System.out.printf("| %-2s | ", "No");
             System.out.printf("%-20s | ", "Name");
             System.out.printf("%-11s | ", "Phone");
@@ -158,7 +164,7 @@ public class admin {
 
     public void flagCustomer() {
 
-        // This function allows admin to flag a customerData as a positive case of CoViD-19.
+        // This function allows admin to flag a customer as a positive case of CoViD-19.
         // With this function deployed, the flagShop() function automatically deploys as well.
 
     }
@@ -166,7 +172,7 @@ public class admin {
     public void flagShop() {
 
         // This function is an extension of the function flagCustomer(). NOTE : DO NOT ATTEMPT TO RUN ON ITS OWN!
-        // This function allows admin to flag a shopData as a zone of CoViD-19 positive cases, thus automatically -
+        // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
         // - flagging anyone who are considered close contacts (within the regulations set in customerData class) as -
         // - CoViD-19 positive cases.
 
