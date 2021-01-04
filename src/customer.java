@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Customer {
+public class customer {
     public void DisplayMenu() {
         System.out.println("\n");
         System.out.println ("________________________________________________________________________________________");
@@ -31,7 +31,7 @@ public class Customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new Customer();
+                new customer();
 
             case 9:
 
@@ -56,7 +56,7 @@ public class Customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new Customer();
+                new customer();
 
             case 9:
 
@@ -81,7 +81,7 @@ public class Customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new Customer();
+                new customer();
 
             case 9:
                 System.out.println("nanti letak function check in");
@@ -104,7 +104,7 @@ public class Customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new Customer();
+                new customer();
 
             case 9:
                 System.out.println("nanti letak function history");
@@ -127,7 +127,7 @@ public class Customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new Customer();
+                new customer();
 
             case 9:
                 System.out.println("nanti letak function status");
@@ -139,7 +139,7 @@ public class Customer {
         }
     }
 
-    private Customer() {
+    private customer() {
         Scanner input = new Scanner ( System.in );
 
         DisplayMenu();
@@ -166,7 +166,7 @@ public class Customer {
                 break;
             default:
                 System.err.println ( "Please enter 1-5" );
-                new Customer();
+                new customer();
         }
     }
 
@@ -177,6 +177,6 @@ public class Customer {
 
     public static void main ( String[] args ) {
 
-        new Customer();
+        new customer();
     }
 }

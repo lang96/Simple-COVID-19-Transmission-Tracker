@@ -1,13 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-class Shuframe extends JFrame {
+class Shuframe extends JFrame implements ActionListener {
 
     JLabel logname, logphone;
-    JTextField t1, t2;
-    JButton submit,reset;
-
-
+    JTextField t1, t3;
+    JPasswordField t2;
+    JButton login,reset;
+    JLabel msg;
 
     Shuframe() {
         setTitle("Login Menu (KUTS)");
@@ -31,20 +33,50 @@ class Shuframe extends JFrame {
         logphone.setBounds(20, 100, 150, 20);
         e.add(logphone);
 
-        t2 = new JTextField();
+        t2 = new JPasswordField();
         t2.setBounds(200, 100, 150, 20);
         e.add(t2);
 
-        submit=new JButton("Login");
-        submit.setBounds(220,150,80,40);
-        e.add(submit);
+        login=new JButton(new ImageIcon("D:\\Download\\regis.png"));
+        login.setBounds(220,150,75,20);
+        login.addActionListener(this);
+        e.add(login);
 
         reset=new JButton("Reset");
         reset.setBounds(90,150,80,40);
+        reset.addActionListener(this);
         e.add(reset);
+
+        msg=new JLabel("");
+        msg.setBounds(280,260,250,20);
+        e.add(msg);
 
         setVisible(true);
 
+    }
+
+    public void actionPerformed(ActionEvent e) {
+
+        String firstName = t1.getText();
+        String mobileNumber = t2.getText();
+        int len = mobileNumber.length();
+
+        String msg = "" + firstName;
+        msg += " \n";
+        if (e.getSource() == login) {
+                if (len != 10) {
+                    JOptionPane.showMessageDialog(login, "Enter a valid mobile number");
+                } else {
+//                    Cust myCust = new Cust();
+                    JOptionPane.showMessageDialog(login,
+                            "Welcome, " + msg);
+                }
+
+        } else if (e.getSource() == reset) {
+            String def = "";
+            t1.setText(def);
+            t2.setText(def);
+        }
     }
 }
 
