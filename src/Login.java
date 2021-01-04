@@ -69,7 +69,7 @@ class Shuframe extends JFrame implements ActionListener {
                 } else {
 //                    Cust myCust = new Cust();
                     JOptionPane.showMessageDialog(login,
-                            "Welcome, " + msg);
+                            "Welcome, " + msg + "pantat");
                 }
 
         } else if (e.getSource() == reset) {
