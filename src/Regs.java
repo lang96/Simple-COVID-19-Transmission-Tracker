@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileWriter;
+import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 class Myframe extends JFrame implements ActionListener{
 
@@ -97,45 +101,56 @@ class Myframe extends JFrame implements ActionListener{
         msg.setBounds(280,260,250,20);
         c.add(msg);
 
-
         setVisible(true);
     }
 
-//    public void actionPerformed(ActionEvent e) {
-//        if (e.getSource() == submit) {
-//            if (confirm.isSelected()) {
-//                String data1;
-//                String data
-//                        = "Name : "
-//                        + firstname.getText() + "\n"
-//                        + "Mobile : "
-//                        + phonenum.getText() + "\n";
-//            }
-//        else {
-//                reset.setText("Please accept the"
-//                        + " terms & conditions..");
-//            }
-//        }
+//    public class Cust {
+//        {
 //
-//        else if (e.getSource() == reset) {
-//            String def = "";
-//            t1.setText(def);
-//            t2.setText(def);
-//            t3.setText(def);
-//            t4.setText(def);
-//            reset.setText(def);
-//            t5.setText(def);
-//            confirm.setSelected(false);
+//            String firstname = t1.getText();
+//            String lastname = t2.getText();
+//            String phonenum = t3.getText();
+//            String email = t4.getText();
+//            String icno = t5.getText();
 //
+//
+//            //Add employees to list
+//            JSONArray firstnameList = new JSONArray();
+//            JSONArray lastnameList = new JSONArray();
+//            JSONArray phonenumList = new JSONArray();
+//            JSONArray emailList = new JSONArray();
+//            JSONArray icnoList = new JSONArray();
+//
+//            firstnameList.add("firstName", firstname);
+//            lastnameList.add("lastName", lastname);
+//            phonenumList.add("phonenum", phonenum);
+//            emailList.add("email",email);
+//            icnoList.add("icno",icno);
+//
+//
+//            //Write JSON file
+//            try (FileWriter file = new FileWriter("C:\\Users\\User\\IdeaProjects\\OOPDS_Assignment_1\\res\\cust.json")) {
+//
+//                file.write(firstnameList.toJSONString());
+//                file.write(lastnameList.toJSONString());
+//                file.write(phonenumList.toJSONString());
+//                file.write(emailList.toJSONString());
+//                file.write(icnoList.toJSONString());
+//
+//                file.flush();
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 //        }
 //    }
-
 
     public void actionPerformed(ActionEvent e) {
 
         String firstName = t1.getText();
         String mobileNumber = t3.getText();
         int len = mobileNumber.length();
+
 
         String msg = "" + firstName;
         msg += " \n";
@@ -144,28 +159,29 @@ class Myframe extends JFrame implements ActionListener{
                 if (len != 10) {
                     JOptionPane.showMessageDialog(submit, "Enter a valid mobile number");
                 } else {
+//                    Cust myCust = new Cust();
                     JOptionPane.showMessageDialog(submit,
                             "Welcome, " + msg + "Your account is successfully created");
 
 
                 }
-            } else if (e.getSource() == reset) {
-                String def = "";
-                t1.setText(def);
-                t2.setText(def);
-                t3.setText(def);
-                t4.setText(def);
-                t5.setText(def);
-                confirm.setSelected(false);
             }
+        } else if (e.getSource() == reset) {
+            String def = "";
+            t1.setText(def);
+            t2.setText(def);
+            t3.setText(def);
+            t4.setText(def);
+            t5.setText(def);
+            confirm.setSelected(false);
         }
     }
 }
 
 
-
 class Regs {
-    //     public static void main(String[] args) {
+        public static void main(String[] args) {
     Myframe frame  = new Myframe();
+}
 }
 //}
