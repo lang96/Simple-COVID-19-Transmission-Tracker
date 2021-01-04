@@ -64,7 +64,7 @@ class Shuframe extends JFrame implements ActionListener {
         String msg = "" + firstName;
         msg += " \n";
         if (e.getSource() == login) {
-                if (len != 10) {
+                if (len != 10 && len !=11) {
                     JOptionPane.showMessageDialog(login, "Enter a valid mobile number");
                 } else {
 //                    Cust myCust = new Cust();
