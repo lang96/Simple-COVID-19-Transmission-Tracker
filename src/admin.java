@@ -9,6 +9,121 @@ import java.io.IOException;
 
 public class admin {
 
+    public static void viewHistory() { // Shu's
+
+        // Reading JSON file \\
+
+        JSONParser jsonParser = new JSONParser();
+
+        // Parsing the contents of the JSON file
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+
+            JSONObject customerVisit = (JSONObject) obj;
+
+            JSONArray date = (JSONArray) customerVisit.get("date");
+            JSONArray time = (JSONArray) customerVisit.get("time");
+            JSONArray shop = (JSONArray) customerVisit.get("shopName");
+
+            // Table output
+
+            System.out.printf("| %-2s | ", "No");
+            System.out.printf("%-10s | ", "Date");
+            System.out.printf("%-8s | ", "Time");
+            System.out.printf("%-15s |\n", "Shop");
+
+            for (int i = 0;i < date.size();i++) {
+
+                System.out.printf("| %-2s | ", (i+1));
+                System.out.printf("%-10s | ", date.get(i));
+                System.out.printf("%-8s | ", time.get(i));
+                System.out.printf("%-15s |\n", shop.get(i));
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void loginRead() { // Just to practice accessing JSON file contents
+
+        // Reading JSON file \\
+
+        JSONParser jsonParser = new JSONParser();
+
+        // Parsing the contents of the JSON file
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\loginData.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject loginData = (JSONObject) obj;
+
+            Object admin = loginData.get("admin");
+            JSONObject adminData = (JSONObject) admin;
+
+            JSONArray adminID = (JSONArray) adminData.get("id");
+            JSONArray adminPass = (JSONArray) adminData.get("pass");
+
+            Object customer = loginData.get("customer");
+            JSONObject customerData = (JSONObject) customer;
+
+            JSONArray phoneNum = (JSONArray) customerData.get("phoneNum");
+            JSONArray email = (JSONArray) customerData.get("email");
+            JSONArray customerPass = (JSONArray) customerData.get("pass");
+
+            // Admin table output
+
+            System.out.printf("| %-2s | ", "No");
+            System.out.printf("%-5s | ", "ID");
+            System.out.printf("%-15s |\n", "Password");
+
+            for (int i = 0;i < adminID.size();i++) {
+
+                System.out.printf("| %-2s | ", (i+1));
+                System.out.printf("%-5s | ", adminID.get(i));
+                System.out.printf("%-15s |\n", adminPass.get(i));
+
+            }
+
+            System.out.println("\n");
+
+            // Customer table output
+
+            System.out.printf("| %-2s | ", "No");
+            System.out.printf("%-11s | ", "Phone");
+            System.out.printf("%-30s | ", "Email");
+            System.out.printf("%-15s |\n", "Password");
+
+            for (int i = 0;i < phoneNum.size();i++) {
+
+                System.out.printf("| %-2s | ", (i+1));
+                System.out.printf("%-11s | ", phoneNum.get(i));
+                System.out.printf("%-30s | ", email.get(i));
+                System.out.printf("%-15s |\n", customerPass.get(i));
+
+            }
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void viewMaster() {
 
         // This function allows admin to view the master visit history of the entire system.
@@ -162,14 +277,14 @@ public class admin {
 
     }
 
-    public void flagCustomer() {
+    public static void flagCustomer() {
 
         // This function allows admin to flag a customer as a positive case of CoViD-19.
         // With this function deployed, the flagShop() function automatically deploys as well.
 
     }
 
-    public void flagShop() {
+    public static void flagShop() {
 
         // This function is an extension of the function flagCustomer(). NOTE : DO NOT ATTEMPT TO RUN ON ITS OWN!
         // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
@@ -178,7 +293,7 @@ public class admin {
 
     }
 
-    public void addVisit() {
+    public static void addVisit() {
 
         // This function allows admin to deploy an additional feature in which 30 random visits are added into the -
         // - master visit history. These visits are generated using the existing list of customers and shops from -
@@ -193,6 +308,10 @@ public class admin {
         viewShop();
         System.out.println("\n");
         viewMaster();
+        System.out.println("\n");
+        viewHistory();
+        System.out.println("\n");
+        loginRead();
         System.out.println("\n");
     }
 

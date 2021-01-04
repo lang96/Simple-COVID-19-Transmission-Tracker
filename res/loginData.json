@@ -1,1 +1,3 @@
-{"phoneNum" : ["44432"], "email" :  [], "pass" : ["sabusabun"]}
+{"admin" : {"id" :  ["arif"], "pass" : ["chk123"]},
+  "customer" : {"phoneNum" : ["0125647894","0144798456","01114567907","0195564321","0105264987"],
+    "email" :  ["","","","",""], "pass" : ["damdam","rjd","CK","melon","throw"]}}
