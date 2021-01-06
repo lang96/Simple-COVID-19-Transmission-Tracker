@@ -1,37 +1,30 @@
+public class Shop { // Shu
 
+    // private members
+    private String shopName, shopPhone, shopStatus, shopManager;
 
+    // constructor
+    public Shop(String shopName, String shopPhone, String shopStatus, String shopManager) {
 
-public class Shop {
-    int phone;
-    String status, manager, name;
-
-    public Shop(int phoneNum, String shopstatus, String shopmanager, String shopname) {
-        phone = phoneNum;
-        status = shopstatus;
-        manager = shopmanager;
-        name = shopname;
-    }
-
-    public void getinfo() {
-        System.out.println(this.name);
-        System.out.println(this.phone);
-        System.out.println(this.status);
-        System.out.println(this.manager);
+        this.shopName = shopName;
+        this.shopPhone = shopPhone;
+        this.shopStatus = shopStatus;
+        this.shopManager = shopManager;
 
     }
 
-//    Shop Tesco = new Shop(1300131313 ,"Normal","Ali","Tesco");
-//        Tesco.getinfo();
-//    Shop Giant = new Shop( 1884694426,"Case","Lee","Giant");
-//        Giant.getinfo();
-//    Shop Econsave = new Shop(1800883311,"Case","Kumar","Econsave");
-//        Econsave.getinfo();
-//    Shop Jaya = new Shop(067360001,"Close","Henry","Jaya Grocer");
-//        Jaya.getinfo();
+    // methods
+    public void getInfo() {
+
+    }
+
+    Shop Tesco = new Shop("Tesco", "1300131313", "Normal", "Ali");
+    Shop Giant = new Shop("Giant", "1884694426", "Case", "Lee");
+    Shop Econsave = new Shop("Econsave", "1800883311", "Case", "Kumar");
+    Shop Jaya = new Shop("Jaya Grocer", "067360001", "Close", "Henry");
+
 
 }
-
-
 
 
 

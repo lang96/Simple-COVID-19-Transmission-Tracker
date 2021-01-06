@@ -1,0 +1,21 @@
+{
+  "Tesco" : {
+  "date" : ["2020-12-28"],
+  "time" : ["22:42:37"],
+  "customerName" : ["Sabrina"]},
+
+  "Giant" : {
+    "date" : [""],
+    "time" : [""],
+    "customerName" : [""]},
+
+  "Econsave" : {
+    "date" : [""],
+    "time" : [""],
+    "customerName" : [""]},
+
+  "Jaya" : {
+    "date" : [""],
+    "time" : [""],
+    "customerName" : [""]}
+}

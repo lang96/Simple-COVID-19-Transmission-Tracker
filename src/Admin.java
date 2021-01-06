@@ -7,52 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class admin {
-
-    public static void viewHistory() { // Shu's
-
-        // Reading JSON file \\
-
-        JSONParser jsonParser = new JSONParser();
-
-        // Parsing the contents of the JSON file
-
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\visitHistory.json")) {
-
-            Object obj = jsonParser.parse(reader);
-
-            JSONObject customerVisit = (JSONObject) obj;
-
-            JSONArray date = (JSONArray) customerVisit.get("date");
-            JSONArray time = (JSONArray) customerVisit.get("time");
-            JSONArray shop = (JSONArray) customerVisit.get("shopName");
-
-            // Table output
-
-            System.out.printf("| %-2s | ", "No");
-            System.out.printf("%-10s | ", "Date");
-            System.out.printf("%-8s | ", "Time");
-            System.out.printf("%-15s |\n", "Shop");
-
-            for (int i = 0;i < date.size();i++) {
-
-                System.out.printf("| %-2s | ", (i+1));
-                System.out.printf("%-10s | ", date.get(i));
-                System.out.printf("%-8s | ", time.get(i));
-                System.out.printf("%-15s |\n", shop.get(i));
-
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-    }
+public class Admin {
 
     public static void loginRead() { // Just to practice accessing JSON file contents
 
@@ -63,7 +18,7 @@ public class admin {
         // Parsing the contents of the JSON file
 
         try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\loginData.json")) {
+                "\\res\\data\\loginData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject loginData = (JSONObject) obj;
@@ -80,39 +35,6 @@ public class admin {
             JSONArray phoneNum = (JSONArray) customerData.get("phoneNum");
             JSONArray email = (JSONArray) customerData.get("email");
             JSONArray customerPass = (JSONArray) customerData.get("pass");
-
-            // Admin table output
-
-            System.out.printf("| %-2s | ", "No");
-            System.out.printf("%-5s | ", "ID");
-            System.out.printf("%-15s |\n", "Password");
-
-            for (int i = 0;i < adminID.size();i++) {
-
-                System.out.printf("| %-2s | ", (i+1));
-                System.out.printf("%-5s | ", adminID.get(i));
-                System.out.printf("%-15s |\n", adminPass.get(i));
-
-            }
-
-            System.out.println("\n");
-
-            // Customer table output
-
-            System.out.printf("| %-2s | ", "No");
-            System.out.printf("%-11s | ", "Phone");
-            System.out.printf("%-30s | ", "Email");
-            System.out.printf("%-15s |\n", "Password");
-
-            for (int i = 0;i < phoneNum.size();i++) {
-
-                System.out.printf("| %-2s | ", (i+1));
-                System.out.printf("%-11s | ", phoneNum.get(i));
-                System.out.printf("%-30s | ", email.get(i));
-                System.out.printf("%-15s |\n", customerPass.get(i));
-
-            }
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -135,16 +57,18 @@ public class admin {
         // Parsing the contents of the JSON file
 
         try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\visitHistory.json")) {
+                "\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
 
             JSONObject visit = (JSONObject) obj;
 
-            JSONArray date = (JSONArray) visit.get("date");
-            JSONArray time = (JSONArray) visit.get("time");
-            JSONArray customer = (JSONArray) visit.get("customerName");
-            JSONArray shop = (JSONArray) visit.get("shopName");
+            Object shop1 = visit.get("Tesco");
+            JSONObject shop1Data = (JSONObject) shop1;
+
+            JSONArray date = (JSONArray) shop1Data.get("date");
+            JSONArray time = (JSONArray) shop1Data.get("time");
+            JSONArray customer = (JSONArray) shop1Data.get("customerName");
 
             // Table output
 
@@ -159,8 +83,7 @@ public class admin {
                 System.out.printf("| %-2s | ", (i+1));
                 System.out.printf("%-10s | ", date.get(i));
                 System.out.printf("%-8s | ", time.get(i));
-                System.out.printf("%-15s | ", customer.get(i));
-                System.out.printf("%-15s |\n", shop.get(i));
+                System.out.printf("%-15s |\n ", customer.get(i));
 
             }
 
@@ -177,7 +100,7 @@ public class admin {
     public static void viewCustomer() {
 
         // This function allows admin to view the details of all customers registered in the system.
-        // Details of customers follows from customer.java
+        // Details of customers follows from Customer.java
         // The details of each customerData which are generated from registration are stored in a json file and are -
         // - retrieved in this java module.
 
@@ -188,7 +111,7 @@ public class admin {
         // Parsing the contents of the JSON file
 
         try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\customerData.json")) {
+                "\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -238,7 +161,7 @@ public class admin {
         // Parsing the contents of the JSON file
 
         try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\shopData.json")) {
+                "\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -308,8 +231,6 @@ public class admin {
         viewShop();
         System.out.println("\n");
         viewMaster();
-        System.out.println("\n");
-        viewHistory();
         System.out.println("\n");
         loginRead();
         System.out.println("\n");
