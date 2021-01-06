@@ -37,7 +37,6 @@ class Myframe extends JFrame implements ActionListener{
         lastname.setBounds(400,50,150,20);
         c.add(lastname);
 
-
         t2=new JTextField();
         t2.setBounds(520,50,150,20);
         c.add(t2);
@@ -60,7 +59,6 @@ class Myframe extends JFrame implements ActionListener{
         t4 = new JTextField();
         t4.setBounds(520, 100, 150, 20);
         c.add(t4);
-
 
 //icno
 

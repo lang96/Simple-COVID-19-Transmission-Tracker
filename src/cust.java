@@ -1,6 +1,8 @@
 import java.util.Scanner;
+import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.format.DateTimeFormatter; // Import the DateTimeFormatter class
 
-public class customer {
+public class cust {
     public void DisplayMenu() {
         System.out.println("\n");
         System.out.println ("________________________________________________________________________________________");
@@ -31,7 +33,7 @@ public class customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new customer();
+                new cust();
 
             case 9:
 
@@ -56,7 +58,7 @@ public class customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new customer();
+                new cust();
 
             case 9:
 
@@ -81,7 +83,7 @@ public class customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new customer();
+                new cust();
 
             case 9:
                 System.out.println("nanti letak function check in");
@@ -104,7 +106,7 @@ public class customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new customer();
+                new cust();
 
             case 9:
                 System.out.println("nanti letak function history");
@@ -127,7 +129,7 @@ public class customer {
         {
             case 0:
                 System.out.println ("Thank you and goodbye.");
-                new customer();
+                new cust();
 
             case 9:
                 System.out.println("nanti letak function status");
@@ -139,7 +141,7 @@ public class customer {
         }
     }
 
-    private customer() {
+    private cust() {
         Scanner input = new Scanner ( System.in );
 
         DisplayMenu();
@@ -166,17 +168,48 @@ public class customer {
                 break;
             default:
                 System.err.println ( "Please enter 1-5" );
-                new customer();
+                new cust();
         }
     }
 
-    public void haha(){
-        System.out.println("babi");
+    public static void checkin() {
+
+        System.out.println("1- Tesco");
+        System.out.println("2- Giant");
+        System.out.println("3- Econsave");
+        System.out.println("4- Jaya Grocer");
+        System.out.println("\n");
+        System.out.println("Please Select a Shop : ");
+        Scanner check = new Scanner(System.in);
+
+
+        switch (check.nextInt()) {
+            case 1:
+                System.out.println("Welcome to Tesco");
+                LocalDateTime masa = LocalDateTime.now();
+                DateTimeFormatter hari = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                String formattedDate = masa.format(hari);
+                System.out.println(formattedDate);
+                break;
+            case 2:
+                System.out.println("Welcome to Giant");
+                break;
+            case 3:
+                System.out.println("Welcome to Econsave");
+                break;
+            case 4:
+                System.out.println("Welcome to Jaya Grocer");
+                break;
+        }
 
     }
+
 
     public static void main ( String[] args ) {
 
-        new customer();
+        checkin();
+//        new customer();
     }
 }
+
+

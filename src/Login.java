@@ -78,6 +78,7 @@ class Shuframe extends JFrame implements ActionListener {
             t2.setText(def);
         }
     }
+
 }
 
 class Login {
