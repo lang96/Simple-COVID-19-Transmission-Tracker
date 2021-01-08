@@ -214,7 +214,7 @@ class menu { // Shu & Arif
                         break;
 
                     case 3:
-                        System.out.println("\nAdminstrator Mode\n");
+                        System.out.println("\nAdministrator Mode\n");
                         opt = choice();
                         if (opt == 0) {
                             loginMenu();
@@ -226,7 +226,7 @@ class menu { // Shu & Arif
                     default:
                         System.err.println("Unrecognized option");
                         System.out.println("\n");
-                        System.out.print("Please enter your choice (1-2): ");
+                        System.out.print("Please enter your choice (1-3): ");
                         option1();
 
                 }

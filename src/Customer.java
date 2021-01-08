@@ -342,16 +342,16 @@ public class Customer { // Arif
                 login.put("customer", );
 
 
-
+                JSONObject customerLogin = new JSONObject();
+                JSONArray loginPhoneArr = new JSONArray();
+                JSONArray loginPassArr = new JSONArray();
 
                 for(int i = 0; i < CustomerList.size(); i++) {
 
                     String updatePhoneNum = "" + CustomerList.get(i).getPhoneNum();
                     String updatePass = "" + CustomerList.get(i).getPass();
 
-                    JSONObject customerLogin = new JSONObject();
-                    JSONArray loginPhoneArr = new JSONArray();
-                    JSONArray loginPassArr = new JSONArray();
+
 
                 }
 
