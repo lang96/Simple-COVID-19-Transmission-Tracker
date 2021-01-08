@@ -12,18 +12,36 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.IOException;
+
+import java.util.ArrayList;
 
 public class Customer { // Arif
 
     // private members
-    private String custName, custPhone, custPass, custStatus;
+    private String custFName, custLName, custPhone, custPass, custStatus;
+
+    // public members
+    public static final String defStatus = "Normal";
+    public static ArrayList<Customer> CustomerList = new ArrayList<>();
 
     // constructor
-    public Customer(String custName, String custPhone, String custPass, String custStatus) {
+    public Customer(String custFName, String custLName, String custPhone, String custPass) {
 
-        this.custName = custName;
+        this.custFName = custFName;
+        this.custLName = custLName;
+        this.custPhone = custPhone;
+        this.custPass = custPass;
+        this.custStatus = defStatus;
+
+    }
+
+    public Customer(String custFName, String custLName, String custPhone, String custPass, String custStatus) {
+
+        this.custFName = custFName;
+        this.custLName = custLName;
         this.custPhone = custPhone;
         this.custPass = custPass;
         this.custStatus = custStatus;
@@ -32,6 +50,178 @@ public class Customer { // Arif
 
     // methods
     public void getInfo() {
+
+    }
+
+    public static void readCustomerList() {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\customerData.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject customerData = (JSONObject) obj;
+
+            JSONArray fNameArr = (JSONArray) customerData.get("fName");
+            JSONArray lNameArr = (JSONArray) customerData.get("lName");
+            JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
+            JSONArray statusArr = (JSONArray)  customerData.get("status");
+
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\loginData.json")) {
+
+                Object obj2 = jsonParser.parse(reader2);
+                JSONObject login = (JSONObject) obj2;
+
+                Object customerObj = login.get("customer");
+                JSONObject loginData = (JSONObject) customerObj;
+
+                JSONArray loginPhoneArr = (JSONArray) loginData.get("phoneNum");
+                JSONArray loginPassArr = (JSONArray) loginData.get("pass");
+
+                for(int i = 0; i < fNameArr.size(); i++) {
+
+                    String appendFName = "" + fNameArr.get(i);
+                    String appendLName = "" + lNameArr.get(i);
+                    String appendPhoneNum = "" + phoneNumArr.get(i);
+                    String appendPass = "";
+                    String appendStatus = "" + statusArr.get(i);
+
+                    for (int j = 0; j < loginPhoneArr.size(); j++) { // To check if phone number entered is registered
+
+                        if (loginPhoneArr.get(i).equals(appendPhoneNum)) {
+
+                            appendPass = "" + loginPassArr.get(i);
+                            break;
+
+                        }
+
+                    }
+
+                    CustomerList.add(new Customer(appendFName, appendLName, appendPhoneNum, appendPass, appendStatus));
+
+                }
+
+            } catch (FileNotFoundException f) {
+                f.printStackTrace();
+            } catch (IOException f) {
+                f.printStackTrace();
+            } catch (ParseException f) {
+                f.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+                f.printStackTrace();
+        } catch (IOException f) {
+                f.printStackTrace();
+        } catch (ParseException f) {
+                f.printStackTrace();
+        }
+
+    }
+
+    public static void appendToCustomerList(String fName, String lName, String phoneNum, String pass) {
+
+        String status = Customer.defStatus;
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\customerData.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject customerData = (JSONObject) obj;
+
+            JSONArray fNameArr = (JSONArray) customerData.get("fName");
+            JSONArray lNameArr = (JSONArray) customerData.get("lName");
+            JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
+            JSONArray statusArr = (JSONArray)  customerData.get("status");
+
+            //Add details to customerData list
+            fNameArr.add(fName);
+            lNameArr.add(lName);
+            phoneNumArr.add(phoneNum);
+            statusArr.add(status);
+
+            CustomerList.add(new Customer(fName, lName, phoneNum, pass));
+
+            // Compile the updated lists into organised JSON format
+            customerData.put("lName", lNameArr);
+            customerData.put("fName", fNameArr);
+            customerData.put("phoneNum", phoneNumArr);
+            customerData.put("status", statusArr);
+
+            //Write JSON file
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\customerData.json")) {
+
+                fileWrite.write(customerData.toJSONString());
+                fileWrite.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+        try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\loginData.json")) {
+
+            Object obj2 = jsonParser.parse(reader2);
+
+            JSONObject login = (JSONObject) obj2;
+
+            Object adminObj = login.get("admin");
+            JSONObject adminData = (JSONObject) adminObj;
+
+            JSONArray adminIDArr = (JSONArray) adminData.get("ID");
+            JSONArray adminPassArr = (JSONArray) adminData.get("pass");
+
+            Object customerObj = login.get("customer");
+            JSONObject loginData = (JSONObject) customerObj;
+
+            JSONArray loginPhoneArr = (JSONArray) loginData.get("phoneNum");
+            JSONArray loginPassArr = (JSONArray) loginData.get("pass");
+
+            //Add details to loginData list
+            loginPhoneArr.add(phoneNum);
+            loginPassArr.add(pass);
+
+            // Compile the updated lists into organised JSON format
+            adminData.put("pass", adminPassArr);
+            adminData.put("ID", adminIDArr);
+
+            loginData.put("pass", loginPassArr);
+            loginData.put("phoneNum", loginPhoneArr);
+
+            login.put("admin",adminData);
+            login.put("customer",loginData);
+
+            //Write JSON file
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\loginData.json")) {
+
+                fileWrite2.write(login.toJSONString());
+                fileWrite2.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
 
     }
 
@@ -62,7 +252,7 @@ class Register { // Shu
             setTitle("Registration Menu (KUTS)");
             setSize(700, 400);
             setLocationRelativeTo(null);
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
             Container c=getContentPane();
             c.setLayout(null);
 
@@ -133,69 +323,36 @@ class Register { // Shu
 
         }
 
-//    public class Cust {
-//        {
-//
-//            String firstname = t1.getText();
-//            String lastname = t2.getText();
-//            String phonenum = t3.getText();
-//            String email = t4.getText();
-//            String icno = t5.getText();
-//
-//
-//            //Add employees to list
-//            JSONArray firstnameList = new JSONArray();
-//            JSONArray lastnameList = new JSONArray();
-//            JSONArray phonenumList = new JSONArray();
-//            JSONArray emailList = new JSONArray();
-//            JSONArray icnoList = new JSONArray();
-//
-//            firstnameList.add("firstName", firstname);
-//            lastnameList.add("lastName", lastname);
-//            phonenumList.add("phonenum", phonenum);
-//            emailList.add("email",email);
-//            icnoList.add("icno",icno);
-//
-//
-//            //Write JSON file
-//            try (FileWriter file = new FileWriter("C:\\Users\\User\\IdeaProjects\\OOPDS_Assignment_1\\res\\cust.json")) {
-//
-//                file.write(firstnameList.toJSONString());
-//                file.write(lastnameList.toJSONString());
-//                file.write(phonenumList.toJSONString());
-//                file.write(emailList.toJSONString());
-//                file.write(icnoList.toJSONString());
-//
-//                file.flush();
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-
         public void actionPerformed(ActionEvent e) {
 
             String fName = t1.getText();
             String lName = t2.getText();
             String phoneNum = t3.getText();
             String pass = t4.getText();
+            String status = Customer.defStatus;
             int len = phoneNum.length();
 
-            String msg = "" + fName;
-            msg += " \n";
+            String message = "Welcome, " + fName + "!\n" + "Your account is successfully created!";
 
             if (e.getSource() == submit) {
 
                 if (confirm.isSelected()) {
 
-                    if (len != 10) {
-                        JOptionPane.showMessageDialog(submit, "Enter a valid mobile number");
+                    if (len != 10 && len != 11) {
+                        JOptionPane.showMessageDialog(submit, "Enter a valid mobile number!");
                     } else {
-//                    Cust myCust = new Cust();
-                        JOptionPane.showMessageDialog(submit,
-                                "Welcome, " + msg + "Your account is successfully created");
+                        Customer.appendToCustomerList(fName, lName, phoneNum, pass);
+                        JOptionPane.showMessageDialog(submit, message);
+                        dispose();
+                        menu.loginMenu();
                     }
+
+                }
+
+                else {
+
+                    JOptionPane.showMessageDialog(submit, "Please ensure all details have been entered " +
+                            "properly and click the checkbox before submitting.");
 
                 }
 
@@ -304,7 +461,7 @@ class Login { // Shu & Arif
                 boolean found = false;
                 int foundIndex = 0;
 
-                for (int i = 0; i < phoneNum.size(); i++) {
+                for (int i = 0; i < phoneNum.size(); i++) { // To check if phone number entered is registered
 
                     if (phoneNum.get(i).equals(phone)) {
                         found = true;
@@ -313,18 +470,56 @@ class Login { // Shu & Arif
 
                 }
 
-                /*
                 try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
                         "\\res\\data\\customerData.json")) {
 
-                    Object obj2 = jsonParser.parse(reader);
+                    Object obj2 = jsonParser.parse(reader2);
 
-                    JSONObject cCustomer = (JSONObject) obj;
+                    JSONObject cCustomer = (JSONObject) obj2;
 
                     JSONArray fName = (JSONArray) cCustomer.get("fName");
-                    JSONArray lName = (JSONArray) cCustomer.get("lName");
                     JSONArray cPhoneNum = (JSONArray) cCustomer.get("phoneNum");
-                    JSONArray status = (JSONArray) cCustomer.get("status");
+
+                    int foundIndex2 = 0;
+
+                    for (int i = 0; i < cPhoneNum.size(); i++) { // To get index of customer who logged in
+
+                        if (cPhoneNum.get(i).equals(phoneNum.get(foundIndex))) {
+                            foundIndex2 = i;
+                        }
+
+                    }
+
+                    String message = "Welcome, " + fName.get(foundIndex2) + "!";
+
+                    if (e.getSource() == login) {
+
+                        if (len != 10 && len !=11) {
+                            JOptionPane.showMessageDialog(login, "Enter a valid mobile number!");
+                        }
+
+                        else if (!found) {
+                            JOptionPane.showMessageDialog(login, "Phone number not registered!");
+                        }
+
+                        else {
+
+                            if (pass.equals(customerPass.get(foundIndex))) {
+                                JOptionPane.showMessageDialog(login, message);
+                                loginStatus = true;
+                                dispose();
+                                menu.userMenu();
+                            } else {
+                                JOptionPane.showMessageDialog(login, "Incorrect password!");
+                            }
+
+                        }
+
+                    } else if (e.getSource() == reset) {
+                        String def = "";
+                        t1.setText(def);
+                        t2.setText(def);
+                    }
 
                 } catch (FileNotFoundException f) {
                     f.printStackTrace();
@@ -332,38 +527,6 @@ class Login { // Shu & Arif
                     f.printStackTrace();
                 } catch (ParseException f) {
                     f.printStackTrace();
-                }
-                 */
-
-                // String msg = "" + firstName;
-                // msg += " \n";
-
-                if (e.getSource() == login) {
-
-                    if (len != 10 && len !=11) {
-                        JOptionPane.showMessageDialog(login, "Enter a valid mobile number!");
-                    }
-
-                    else if (!found) {
-                        JOptionPane.showMessageDialog(login, "Phone number not registered!");
-                    }
-
-                    else {
-
-                        if (pass.equals(customerPass.get(foundIndex))) {
-                            JOptionPane.showMessageDialog(login, "Welcome!");
-                            loginStatus = true;
-                            dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(login, "Incorrect password!");
-                        }
-
-                    }
-
-                } else if (e.getSource() == reset) {
-                    String def = "";
-                    t1.setText(def);
-                    t2.setText(def);
                 }
 
             } catch (FileNotFoundException f) {
@@ -388,6 +551,7 @@ class Check_In { // Shu
 
     static class check_InFrame extends JFrame implements ActionListener { // add console check in module which accommodates class if got time
 
+        public static String check_InShop;
         JLabel Title;
         JButton Tesco, Giant, Econsave, Jaya;
         JLabel msg;
@@ -436,25 +600,29 @@ class Check_In { // Shu
 
         public void actionPerformed(ActionEvent e) { // fix
 
-            LocalDateTime masa = LocalDateTime.now(); // fix
-            DateTimeFormatter hari = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"); // fix
-            String formattedDate = masa.format(hari); // fix
+            LocalDateTime timeVar = LocalDateTime.now();
+            DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDate = timeVar.format(dateVar);
 
             if (e.getSource() == Tesco) {
                 JOptionPane.showMessageDialog(Tesco,
                         "Checked-In Tesco at :" + "\n" + formattedDate);
+                check_InShop = "" + "Tesco";
             }
             if (e.getSource() == Giant) {
                 JOptionPane.showMessageDialog(Giant,
                         "Checked-In Giant at :" + "\n" + formattedDate);
+                check_InShop = "" + "Giant";
             }
             if (e.getSource() == Econsave) {
                 JOptionPane.showMessageDialog(Econsave,
                         "Checked-In Econsave at :" + "\n" + formattedDate);
+                check_InShop = "" + "Econsave";
             }
             if (e.getSource() == Jaya) {
                 JOptionPane.showMessageDialog(Jaya,
                         "Checked-In Jaya Grocer at :" + "\n" + formattedDate);
+                check_InShop = "" + "Jaya Grocer";
             }
 
         }

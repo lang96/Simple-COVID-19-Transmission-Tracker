@@ -1,7 +1,2 @@
-{
-  "admin" : {"ID" :  ["arif"], "pass" : ["chk123"]},
-
-  "customer" : {
-    "phoneNum" : ["0125647894","0144798456","01114567907","0195564321","0105264987"],
-    "pass" : ["damdam","rjd","CK","melon","throw"]}
-}
+{"admin":{"pass":["chk123"],"ID":["arif"]},"customer":{"pass":["damdam","rjd","CK","melon","throw","fhfhfhf"],
+  "phoneNum":["0125647894","0144798456","01114567907","0195564321","0105264987","1234567890"]}}

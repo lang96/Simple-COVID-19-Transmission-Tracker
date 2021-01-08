@@ -6,43 +6,21 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Admin {
 
-    public static void loginRead() { // Just to practice accessing JSON file contents
+    public static void adminLogin() {
 
-        // Reading JSON file \\
+        System.out.println ("                                   -------------                                        ");
+        System.out.println ("                                    Admin Login                                         ");
+        System.out.println ("                                   -------------                                        ");
 
-        JSONParser jsonParser = new JSONParser();
+        Scanner s = new Scanner(System.in);
+        String adminID = s.next(); // fix catch string only
 
-        // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\loginData.json")) {
-
-            Object obj = jsonParser.parse(reader);
-            JSONObject loginData = (JSONObject) obj;
-
-            Object admin = loginData.get("admin");
-            JSONObject adminData = (JSONObject) admin;
-
-            JSONArray adminID = (JSONArray) adminData.get("id");
-            JSONArray adminPass = (JSONArray) adminData.get("pass");
-
-            Object customer = loginData.get("customer");
-            JSONObject customerData = (JSONObject) customer;
-
-            JSONArray phoneNum = (JSONArray) customerData.get("phoneNum");
-            JSONArray email = (JSONArray) customerData.get("email");
-            JSONArray customerPass = (JSONArray) customerData.get("pass");
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        String pass = s.next(); // fix catch string only
 
     }
 
@@ -60,30 +38,28 @@ public class Admin {
                 "\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
-
             JSONObject visit = (JSONObject) obj;
 
-            Object shop1 = visit.get("Tesco");
-            JSONObject shop1Data = (JSONObject) shop1;
-
-            JSONArray date = (JSONArray) shop1Data.get("date");
-            JSONArray time = (JSONArray) shop1Data.get("time");
-            JSONArray customer = (JSONArray) shop1Data.get("customerName");
+            JSONArray date = (JSONArray) visit.get("date");
+            JSONArray time = (JSONArray) visit.get("time");
+            JSONArray customer = (JSONArray) visit.get("customerName");
+            JSONArray shop = (JSONArray) visit.get("shop");
 
             // Table output
 
-            System.out.printf("| %-2s | ", "No");
-            System.out.printf("%-10s | ", "Date");
-            System.out.printf("%-8s | ", "Time");
-            System.out.printf("%-15s | ", "Customer");
-            System.out.printf("%-15s |\n", "Shop");
+            System.out.printf("%-2s ", "No");
+            System.out.printf("%-10s  ", "Date");
+            System.out.printf("%-8s  ", "Time");
+            System.out.printf("%-15s ", "Customer");
+            System.out.printf("%-15s \n", "Shop");
 
             for (int i = 0;i < customer.size();i++) {
 
-                System.out.printf("| %-2s | ", (i+1));
-                System.out.printf("%-10s | ", date.get(i));
-                System.out.printf("%-8s | ", time.get(i));
-                System.out.printf("%-15s |\n ", customer.get(i));
+                System.out.printf("%-2s ", (i+1));
+                System.out.printf("%-10s  ", date.get(i));
+                System.out.printf("%-8s  ", time.get(i));
+                System.out.printf("%-15s ", customer.get(i));
+                System.out.printf("%-15s \n", shop.get(i));
 
             }
 
@@ -124,17 +100,17 @@ public class Admin {
 
             // Table output
 
-            System.out.printf("| %-2s | ", "No");
-            System.out.printf("%-20s | ", "Name");
-            System.out.printf("%-11s | ", "Phone");
-            System.out.printf("%-6s |\n", "Status");
+            System.out.printf("%-2s ", "No");
+            System.out.printf("%-15s  ", "Name");
+            System.out.printf("%-11s ", "Phone");
+            System.out.printf("%-6s \n", "Status");
 
             for (int i = 0;i < phoneNum.size();i++) {
 
-                System.out.printf("| %-2s | ", (i+1));
-                System.out.printf("%-20s | ", fName.get(i) + " " + lName.get(i));
-                System.out.printf("%-11s | ", phoneNum.get(i));
-                System.out.printf("%-6s |\n", status.get(i));
+                System.out.printf("%-2s ", (i+1));
+                System.out.printf("%-15s  ", fName.get(i) + " " + lName.get(i));
+                System.out.printf("%-11s ", phoneNum.get(i));
+                System.out.printf("%-6s \n", status.get(i));
 
             }
 
@@ -231,8 +207,6 @@ public class Admin {
         viewShop();
         System.out.println("\n");
         viewMaster();
-        System.out.println("\n");
-        loginRead();
         System.out.println("\n");
     }
 
