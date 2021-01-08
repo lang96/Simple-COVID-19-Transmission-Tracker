@@ -320,10 +320,10 @@ public class Customer { // Arif
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
 
-            JSONArray fNameArr = (JSONArray) customerData.get("fName");
-            JSONArray lNameArr = (JSONArray) customerData.get("lName");
-            JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
-            JSONArray statusArr = (JSONArray)  customerData.get("status");
+            customerData.remove("fName");
+            customerData.remove("lName");
+            customerData.remove("phoneNum");
+            customerData.remove("status");
 
             try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
                     "\\res\\data\\loginData.json")) {
@@ -339,8 +339,6 @@ public class Customer { // Arif
                 JSONArray adminPassArr = (JSONArray) adminData.get("pass");
 
                 login.remove("customer");
-                login.put("customer", );
-
 
                 JSONObject customerLogin = new JSONObject();
                 JSONArray loginPhoneArr = new JSONArray();
@@ -350,9 +348,27 @@ public class Customer { // Arif
 
                     String updatePhoneNum = "" + CustomerList.get(i).getPhoneNum();
                     String updatePass = "" + CustomerList.get(i).getPass();
+                    loginPhoneArr.add(updatePhoneNum);
+                    loginPassArr.add(updatePass);
 
+                }
 
+                customerLogin.put("pass", loginPassArr);
+                customerLogin.put("phoneNum", loginPhoneArr);
+                adminData.put("pass", adminPassArr);
+                adminData.put("ID", adminIDArr);
 
+                login.put("admin", adminData);
+                login.put("customer", customerLogin);
+
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                        "\\res\\data\\loginData.json")) {
+
+                    fileWrite.write(login.toJSONString());
+                    fileWrite.flush();
+
+                } catch (IOException ef) {
+                    ef.printStackTrace();
                 }
 
             } catch (FileNotFoundException f) {
@@ -363,14 +379,38 @@ public class Customer { // Arif
                 f.printStackTrace();
             }
 
+            JSONArray fNameArr = new JSONArray();
+            JSONArray lNameArr = new JSONArray();
+            JSONArray phoneNumArr = new JSONArray();
+            JSONArray statusArr = new JSONArray();
+
             for(int i = 0; i < CustomerList.size(); i++) {
 
                 String updateFName = "" + CustomerList.get(i).getFName();
                 String updateLName = "" + CustomerList.get(i).getLName();
                 String updatePhoneNum = "" + CustomerList.get(i).getPhoneNum();
-                String updatePass = "" + CustomerList.get(i).getPass();
                 String updateStatus = "" + CustomerList.get(i).getStatus();
 
+                fNameArr.add(updateFName);
+                lNameArr.add(updateLName);
+                phoneNumArr.add(updatePhoneNum);
+                statusArr.add(updateStatus);
+
+            }
+
+            customerData.put("lName",lNameArr);
+            customerData.put("fName",fNameArr);
+            customerData.put("phoneNum",phoneNumArr);
+            customerData.put("status",statusArr);
+
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\customerData.json")) {
+
+                fileWrite2.write(customerData.toJSONString());
+                fileWrite2.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
             }
 
         } catch (FileNotFoundException f) {
@@ -388,7 +428,6 @@ public class Customer { // Arif
 
         initializeCustomerList();
         ArrayList<Integer> flaggable = displayCustomerListToFlag();
-
 
     }
 
@@ -533,18 +572,18 @@ class Register { // Shu
 
     }
 
-}
+} // buffer issue
 
 class Login { // Shu & Arif
 
-    public static boolean custLogin() {
+    public static String custLogin() {
         loginFrame frame = new loginFrame();
-        return loginFrame.loginStatus;
+        return loginFrame.loggedInUserPhone;
     }
 
     static class loginFrame extends JFrame implements ActionListener {
 
-        public static boolean loginStatus;
+        public static String loggedInUserPhone;
         JLabel loginPhone, loginPass;
         JTextField t1;
         JPasswordField t2;
@@ -668,7 +707,7 @@ class Login { // Shu & Arif
 
                             if (pass.equals(customerPass.get(foundIndex))) {
                                 JOptionPane.showMessageDialog(login, message);
-                                loginStatus = true;
+                                loggedInUserPhone = "" + phone;
                                 dispose();
                                 menu.userMenu();
                             } else {
@@ -703,7 +742,7 @@ class Login { // Shu & Arif
 
     }
 
-}
+} // buffer issue
 
 class Check_In { // Shu
 
@@ -791,7 +830,7 @@ class Check_In { // Shu
 
     }
 
-}
+} // buffer issue
 
 class ViewHistory { // Arif
 
@@ -915,10 +954,10 @@ class ViewHistory { // Arif
 
     }
 
-}
+} // incomplete
 
 class CheckStatus { // Arif
 
 
 
-}
+} // not created

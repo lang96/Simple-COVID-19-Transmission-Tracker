@@ -26,7 +26,7 @@ public class Admin {
 
         String pass = s.next(); // fix catch string only
 
-    }
+    } // incomplete
 
     public static void viewMaster() {
 
@@ -75,7 +75,7 @@ public class Admin {
             e.printStackTrace();
         }
 
-    }
+    } // incomplete
 
     public static void viewCustomer() {
 
@@ -104,17 +104,17 @@ public class Admin {
 
             // Table output
 
-            System.out.printf("%-2s ", "No");
+            System.out.printf("\n%-2s ", "No");
             System.out.printf("%-15s  ", "Name");
-            System.out.printf("%-11s ", "Phone");
-            System.out.printf("%-6s \n", "Status");
+            System.out.printf("%-11s  ", "Phone");
+            System.out.printf("%-6s \n\n", "Status");
 
             for (int i = 0;i < phoneNum.size();i++) {
 
                 System.out.printf("%-2s ", (i+1));
                 System.out.printf("%-15s  ", fName.get(i) + " " + lName.get(i));
-                System.out.printf("%-11s ", phoneNum.get(i));
-                System.out.printf("%-6s \n", status.get(i));
+                System.out.printf("%-11s  ", phoneNum.get(i));
+                System.out.printf("%-6s \n\n", status.get(i));
 
             }
 
@@ -178,9 +178,9 @@ public class Admin {
             e.printStackTrace();
         }
 
-    }
+    } // incomplete
 
-    public static int choice(ArrayList<Integer> flagIndex, int index) {
+    public static int choice(ArrayList<Integer> flagIndex, int index) { // For flagCustomer()
 
         int opt = -1;
         Scanner s = new Scanner(System.in);
@@ -190,12 +190,12 @@ public class Admin {
             try {
 
                 System.out.println("Which customer would you like to flag?\n");
-                System.out.println("Enter the index (no) of the customer\n");
+                System.out.println("Enter the index (no) of the customer: \n");
                 opt = s.nextInt();
                 choice = true;
                 opt -= 1;
                 if (opt < 0 || opt > flagIndex.size()) {
-                    System.err.println ("Unrecognized option!\n");
+                    System.err.println ("\nUnrecognized option!\n");
                     choice(flagIndex, index);
                 } else {
                     index = flagIndex.get(opt);
@@ -236,7 +236,7 @@ public class Admin {
         // - flagging anyone who are considered close contacts (within the regulations set in customerData class) as -
         // - CoViD-19 positive cases.
 
-    }
+    } // not created
 
     public static void addVisit() {
 
@@ -244,12 +244,14 @@ public class Admin {
         // - master visit history. These visits are generated using the existing list of customers and shops from -
         // - application data files (json).
 
-    }
+    } // not created
 
     // Test main module only
     public static void main(String[] args) {
+        viewCustomer();
         Customer.initializeCustomerList();
         flagCustomer();
+        Customer.updateCustomerList();
     }
 
 }
