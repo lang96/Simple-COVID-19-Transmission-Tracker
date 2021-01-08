@@ -49,11 +49,68 @@ public class Customer { // Arif
     }
 
     // methods
-    public void getInfo() {
+
+    // getters
+    public String getFName() {
+        return this.custFName;
+    }
+
+    public String getLName() {
+        return this.custLName;
+    }
+
+    public String getPhoneNum() {
+        return this.custPhone;
+    }
+
+    public String getPass() {
+        return this.custPass;
+    }
+
+    public String getStatus() {
+        return this.custStatus;
+    }
+
+    // setters
+    public void setFName(String custFName) {
+        this.custFName = custFName;
+    }
+
+    public void setLName(String custLName) {
+        this.custLName = custLName;
+    }
+
+    public void setPhoneNum(String custPhone) {
+        this.custPhone = custPhone;
+    }
+
+    public void setPass(String custPass) {
+        this.custPass = custPass;
+    }
+
+    public void setStatus(String custStatus) {
+        this.custStatus = custStatus;
+    }
+
+    // list and JSON methods
+
+    public String toString(int index) {
+
+        String fullName = custFName + " " + custLName;
+
+        return String.format("%-2s %-15s  %-11s  %-6s \n", index, fullName, custPhone, custStatus);
 
     }
 
-    public static void readCustomerList() {
+    public String toString() {
+
+        String fullName = custFName + " " + custLName;
+
+        return String.format("%-15s  %-11s  %-6s \n", fullName, custPhone, custStatus);
+
+    }
+
+    public static void initializeCustomerList() { // At the start of program, the CustomerList is initialized from JSON file
 
         JSONParser jsonParser = new JSONParser();
 
@@ -118,6 +175,34 @@ public class Customer { // Arif
         } catch (ParseException f) {
                 f.printStackTrace();
         }
+
+    }
+
+    public static ArrayList<Integer>displayCustomerListToFlag()  {
+
+        System.out.printf("\n%-2s %-15s  %-11s  %-6s \n\n", "No", "Name", "Phone", "Status");
+
+        int outputIndex = 0;
+        ArrayList<Integer> flagIndex = new ArrayList<>();
+
+        for(int i=0; i < CustomerList.size(); i++) {
+
+            if (CustomerList.get(i).custStatus.equals("Case")) {
+                continue;
+            }
+            else if (CustomerList.get(i).custStatus.equals("Close")) {
+                continue;
+            }
+            else {
+                outputIndex++;
+                String output = CustomerList.get(i).toString(outputIndex);
+                flagIndex.add(i);
+                System.out.println(output);
+            }
+
+        }
+
+        return flagIndex;
 
     }
 
@@ -225,8 +310,85 @@ public class Customer { // Arif
 
     }
 
+    public static void updateCustomerList() {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\customerData.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject customerData = (JSONObject) obj;
+
+            JSONArray fNameArr = (JSONArray) customerData.get("fName");
+            JSONArray lNameArr = (JSONArray) customerData.get("lName");
+            JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
+            JSONArray statusArr = (JSONArray)  customerData.get("status");
+
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\loginData.json")) {
+
+                Object obj2 = jsonParser.parse(reader2);
+
+                JSONObject login = (JSONObject) obj2;
+
+                Object adminObj = login.get("admin");
+                JSONObject adminData = (JSONObject) adminObj;
+
+                JSONArray adminIDArr = (JSONArray) adminData.get("ID");
+                JSONArray adminPassArr = (JSONArray) adminData.get("pass");
+
+                login.remove("customer");
+                login.put("customer", );
+
+
+
+
+                for(int i = 0; i < CustomerList.size(); i++) {
+
+                    String updatePhoneNum = "" + CustomerList.get(i).getPhoneNum();
+                    String updatePass = "" + CustomerList.get(i).getPass();
+
+                    JSONObject customerLogin = new JSONObject();
+                    JSONArray loginPhoneArr = new JSONArray();
+                    JSONArray loginPassArr = new JSONArray();
+
+                }
+
+            } catch (FileNotFoundException f) {
+                f.printStackTrace();
+            } catch (IOException f) {
+                f.printStackTrace();
+            } catch (ParseException f) {
+                f.printStackTrace();
+            }
+
+            for(int i = 0; i < CustomerList.size(); i++) {
+
+                String updateFName = "" + CustomerList.get(i).getFName();
+                String updateLName = "" + CustomerList.get(i).getLName();
+                String updatePhoneNum = "" + CustomerList.get(i).getPhoneNum();
+                String updatePass = "" + CustomerList.get(i).getPass();
+                String updateStatus = "" + CustomerList.get(i).getStatus();
+
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
     // test main method
     public static void main(String[] args) {
+
+        initializeCustomerList();
+        ArrayList<Integer> flaggable = displayCustomerListToFlag();
+
 
     }
 

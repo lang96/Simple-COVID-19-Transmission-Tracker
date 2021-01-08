@@ -42,7 +42,7 @@ public class mainApp { // Arif
 
     public static void main(String[] args) {
 
-        Customer.readCustomerList(); // Initialize CustomerList at the start of program
+        Customer.initializeCustomerList(); // Initialize CustomerList at the start of program
         menu.loginMenu();
 
     }
@@ -136,7 +136,7 @@ class menu { // Shu & Arif
 
             } catch (InputMismatchException ex) {
                 choice = false;
-                System.out.println("Invalid Input!\n");
+                System.out.println("\nInvalid Input!\n");
                 s.nextLine();
             }
 
@@ -168,7 +168,7 @@ class menu { // Shu & Arif
 
             } catch (InputMismatchException ex) {
                 choice = false;
-                System.out.println("Invalid Input!\n");
+                System.out.println("\nInvalid Input!\n");
                 s.nextLine();
             }
 
@@ -213,6 +213,16 @@ class menu { // Shu & Arif
                         }
                         break;
 
+                    case 3:
+                        System.out.println("\nAdminstrator Mode\n");
+                        opt = choice();
+                        if (opt == 0) {
+                            loginMenu();
+                        } else {
+                            adminMenu();
+                        }
+                        break;
+
                     default:
                         System.err.println("Unrecognized option");
                         System.out.println("\n");
@@ -222,7 +232,7 @@ class menu { // Shu & Arif
                 }
             } catch (InputMismatchException ex) {
                 checkOpt = false;
-                System.out.println("Invalid Input!\n");
+                System.out.println("\nInvalid Input!");
                 input.nextLine();
                 loginMenu();
             }
@@ -294,9 +304,9 @@ class menu { // Shu & Arif
                 }
             } catch (InputMismatchException ex) {
                 checkOpt2 = false;
-                System.out.println("Invalid Input!\n");
+                System.out.println("\nInvalid Input!");
                 input.nextLine();
-                loginMenu();
+                userMenu();
             }
 
         } while (checkOpt2 ==false);
@@ -307,7 +317,10 @@ class menu { // Shu & Arif
 
         Scanner input = new Scanner ( System.in );
         int opt;
+        boolean checkOpt3=false;
 
+        do {
+            try {
         switch (input.nextInt()) { // fix catch digit only
 
             case 1:
@@ -381,6 +394,14 @@ class menu { // Shu & Arif
                 option3();
 
         }
+            } catch (InputMismatchException ex) {
+                checkOpt3 = false;
+                System.out.println("\nInvalid Input!");
+                input.nextLine();
+                adminMenu();
+            }
+
+        } while (checkOpt3 ==false);
 
     }
 

@@ -6,7 +6,11 @@ import org.json.simple.parser.ParseException;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Admin {
 
@@ -176,10 +180,52 @@ public class Admin {
 
     }
 
+    public static int choice(ArrayList<Integer> flagIndex, int index) {
+
+        int opt = -1;
+        Scanner s = new Scanner(System.in);
+        boolean choice = false;
+
+        do {
+            try {
+
+                System.out.println("Which customer would you like to flag?\n");
+                System.out.println("Enter the index (no) of the customer\n");
+                opt = s.nextInt();
+                choice = true;
+                opt -= 1;
+                if (opt < 0 || opt > flagIndex.size()) {
+                    System.err.println ("Unrecognized option!\n");
+                    choice(flagIndex, index);
+                } else {
+                    index = flagIndex.get(opt);
+                }
+
+            } catch (InputMismatchException ex) {
+                choice = false;
+                System.out.println("\nInvalid Input!\n");
+                s.nextLine();
+            }
+
+        } while (choice==false);
+
+        return index;
+
+    }
+
     public static void flagCustomer() {
 
         // This function allows admin to flag a customer as a positive case of CoViD-19.
         // With this function deployed, the flagShop() function automatically deploys as well.
+
+        // access customer and retrieve index
+        int flagIndex = 0;
+        ArrayList<Integer> flaggable = Customer.displayCustomerListToFlag();
+        flagIndex = choice(flaggable, flagIndex);
+
+        // flag customer
+        String newStat = "Case";
+        Customer.CustomerList.get(flagIndex).setStatus(newStat);
 
     }
 
@@ -202,12 +248,8 @@ public class Admin {
 
     // Test main module only
     public static void main(String[] args) {
-        viewCustomer();
-        System.out.println("\n");
-        viewShop();
-        System.out.println("\n");
-        viewMaster();
-        System.out.println("\n");
+        Customer.initializeCustomerList();
+        flagCustomer();
     }
 
 }
