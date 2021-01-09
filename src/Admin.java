@@ -3,6 +3,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -26,20 +31,6 @@ public class Admin {
     // methods
 
     // program feature methods
-    public static void adminLogin() {
-
-        System.out.println ("                                   -------------                                        ");
-        System.out.println ("                                    Admin Login                                         ");
-        System.out.println ("                                   -------------                                        ");
-
-        Scanner s = new Scanner(System.in);
-        String adminID = s.next(); // fix catch string only
-
-
-        String pass = s.next(); // fix catch string only
-
-    } // incomplete
-
     public static void viewMaster() {
 
         // This function allows admin to view the master visit history of the entire system.
@@ -63,11 +54,11 @@ public class Admin {
 
             // Table output
 
-            System.out.printf("%-2s ", "No");
+            System.out.printf("\n%-2s ", "No");
             System.out.printf("%-10s  ", "Date");
             System.out.printf("%-8s  ", "Time");
             System.out.printf("%-15s ", "Customer");
-            System.out.printf("%-15s \n", "Shop");
+            System.out.printf("%-15s \n\n", "Shop");
 
             for (int i = 0;i < customer.size();i++) {
 
@@ -75,8 +66,16 @@ public class Admin {
                 System.out.printf("%-10s  ", date.get(i));
                 System.out.printf("%-8s  ", time.get(i));
                 System.out.printf("%-15s ", customer.get(i));
-                System.out.printf("%-15s \n", shop.get(i));
+                System.out.printf("%-15s \n\n", shop.get(i));
 
+            }
+
+            int opt = options.afterChoice();
+
+            if(opt == 9) {
+                menu.adminMenu();
+            } else {
+                menu.startMenu();
             }
 
         } catch (FileNotFoundException e) {
@@ -130,6 +129,14 @@ public class Admin {
 
             }
 
+            int opt = options.afterChoice();
+
+            if(opt == 9) {
+                menu.adminMenu();
+            } else {
+                menu.startMenu();
+            }
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -166,11 +173,11 @@ public class Admin {
 
             // Table output
 
-            System.out.printf("%-2s ", "No");
+            System.out.printf("\n%-2s ", "No");
             System.out.printf("%-15s  ", "Name");
             System.out.printf("%-11s  ", "Phone");
             System.out.printf("%-15s  ", "Manager");
-            System.out.printf("%-6s \n", "Status");
+            System.out.printf("%-6s \n\n", "Status");
 
             for (int i = 0;i < phoneNum.size();i++) {
 
@@ -178,8 +185,16 @@ public class Admin {
                 System.out.printf("%-15s  ", name.get(i));
                 System.out.printf("%-11s  ", phoneNum.get(i));
                 System.out.printf("%-15s  ", manager.get(i));
-                System.out.printf("%-6s \n", status.get(i));
+                System.out.printf("%-6s \n\n", status.get(i));
 
+            }
+
+            int opt = options.afterChoice();
+
+            if(opt == 9) {
+                menu.adminMenu();
+            } else {
+                menu.startMenu();
             }
 
         } catch (FileNotFoundException e) {
@@ -206,9 +221,19 @@ public class Admin {
         String newStat = "Case";
         Customer.CustomerList.get(flagIndex).setStatus(newStat);
 
-        LocalDateTime timeVar = LocalDateTime.now();
-        DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = timeVar.format(dateVar);
+        Customer.updateCustomerList();
+
+        //LocalDateTime timeVar = LocalDateTime.now();
+        //DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        //String formattedDate = timeVar.format(dateVar);
+
+        int opt = options.afterChoice();
+
+        if(opt == 9) {
+            menu.adminMenu();
+        } else {
+            menu.startMenu();
+        }
 
         // above 1 am and below 11 pm
 
@@ -216,11 +241,11 @@ public class Admin {
         // between 11 pm and 1 am
 
 
-    }
+    } // fix
 
     public static String flagShop(String shop, String date, String time) {
 
-        // This function is an extension of the function flagCustomer(). NOTE : DO NOT ATTEMPT TO RUN ON ITS OWN!
+        // This function is an extension of the function flagCustomer().
         // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
         // - flagging anyone who are considered close contacts (within the regulations set in customerData class) as -
         // - CoViD-19 positive cases.
@@ -234,7 +259,7 @@ public class Admin {
         ArrayList<String> flagTimeIndex = new ArrayList<>();
         ArrayList<String> flaggedCustomers = new ArrayList<>();
         String[] splitDateTime;
-        long minDiff = 0;
+        long minsDiff = 0;
 
 
         JSONParser jsonParser = new JSONParser();
@@ -261,8 +286,10 @@ public class Admin {
 
             for (int i = 0;i < dateTimeIndex.size();i++) {
 
-                minDiff = findDifference(fullDateTime, dateTimeIndex.get(i));
-                if (minDiff >= 0 && minDiff <= 60) {
+                minsDiff = findDifference(fullDateTime, dateTimeIndex.get(i));
+                if (minsDiff >= 0 && minsDiff <= 60) {
+                    if (fullDateTime.equals(dateTimeIndex.get(i)))
+                        continue;
                     flagTimeIndex.add(dateTimeIndex.get(i));
                 }
 
@@ -328,13 +355,32 @@ public class Admin {
 
         return fullDateTime;
 
-    } // incomplete
+    } // incomplete & fix
 
-    public static void addVisit() {
+    public static void add30Visits() {
 
         // This function allows admin to deploy an additional feature in which 30 random visits are added into the -
         // - master visit history. These visits are generated using the existing list of customers and shops from -
         // - application data files (json).
+
+        for(int i = 0; i < 30; i++) {
+
+            addVisit();
+
+        }
+
+        int opt = options.afterChoice();
+
+        if(opt == 9) {
+            menu.adminMenu();
+        } else {
+            menu.startMenu();
+        }
+
+    } // complete
+
+    // accompanying methods
+    public static void addVisit() {
 
         // get name, shop arrays
 
@@ -356,16 +402,72 @@ public class Admin {
         }
 
         // get random element from arrays
-        getRandomString(nameArr);
-        getRandomString(shopArr);
+        String randomName = getRandomString(nameArr);
+        String randomShop = getRandomString(shopArr);
 
         // get random time
+        String dateTime = "";
 
+        try {
+            dateTime = getRandomDate();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
 
-    } // not created
+        String[] splitDateTime = dateTime.split(" ");
 
+        String outputDate = "" + splitDateTime[0];
+        String outputTime = "" + splitDateTime[1];
 
-    // accompanying methods
+        appendVisit(randomName, outputDate, outputTime, randomShop);
+
+    }
+
+    public static void clearVisitJSON() {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            visit.remove("date");
+            visit.remove("time");
+            visit.remove("customerName");
+            visit.remove("shop");
+
+            JSONArray visitDate = new JSONArray();
+            JSONArray visitTime = new JSONArray();
+            JSONArray visitName = new JSONArray();
+            JSONArray visitShop = new JSONArray();
+
+            visit.put("date", visitDate);
+            visit.put("time", visitTime);
+            visit.put("customerName", visitName);
+            visit.put("shop", visitShop);
+
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\visitHistory.json")) {
+
+                fileWrite.write(visit.toJSONString());
+                fileWrite.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
     public static void appendToMasterHistory(String loginPhone, String check_InDate, String check_InTime, String check_InShop) {
 
         JSONParser jsonParser = new JSONParser();
@@ -395,7 +497,6 @@ public class Admin {
 
                     if(loginPhone.equals(phoneNum.get(i))) {
                         appendName = "" + name.get(i);
-                        System.out.println(name);
                         break;
                     }
 
@@ -439,6 +540,51 @@ public class Admin {
 
     }
 
+    public static void appendVisit(String name, String check_InDate, String check_InTime, String check_InShop) {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            JSONArray visitDate = (JSONArray) visit.get("date");
+            JSONArray visitTime = (JSONArray) visit.get("time");
+            JSONArray visitName = (JSONArray) visit.get("customerName");
+            JSONArray visitShop = (JSONArray) visit.get("shop");
+
+            visitDate.add(check_InDate);
+            visitTime.add(check_InTime);
+            visitName.add(name);
+            visitShop.add(check_InShop);
+
+            visit.put("date", visitDate);
+            visit.put("time", visitTime);
+            visit.put("customerName", visitName);
+            visit.put("shop", visitShop);
+
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\visitHistory.json")) {
+
+                fileWrite.write(visit.toJSONString());
+                fileWrite.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
     public static int choice(ArrayList<Integer> flagIndex, int index) { // For flagCustomer()
 
         int opt = -1;
@@ -448,7 +594,7 @@ public class Admin {
         do {
             try {
 
-                System.out.println("Which customer would you like to flag?\n");
+                System.out.println("\nWhich customer would you like to flag?\n");
                 System.out.println("Enter the index (no) of the customer: \n");
                 opt = s.nextInt();
                 choice = true;
@@ -506,7 +652,7 @@ public class Admin {
     public static String getRandomDate() throws java.text.ParseException {
 
         long startPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Jan-2021").getTime();
-        long endPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Feb-2021").getTime();
+        long endPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Dec-2020").getTime();
 
         Random randomTime = new Random();
         long timePeriod = endPoint - startPoint;
@@ -517,6 +663,8 @@ public class Admin {
         String[] splitDateTime = outputTimeStamp.split(" ");
         String outputDate = "" + splitDateTime[0];
         String outputTime = "" + splitDateTime[1];
+
+        return outputDate + " " + outputTime;
 
     }
 
@@ -530,16 +678,153 @@ public class Admin {
 
     }
 
+}
 
-    // Test main module only
-    public static void main(String[] args) throws java.text.ParseException {
+class Admin_Login {
 
-        viewCustomer();
-        viewMaster();
-        viewShop();
-        //Customer.initializeCustomerList();
-        //flagCustomer();
-        //Customer.updateCustomerList();
+    public static void adminLogin() {
+        AdminFrame adminLogin = new AdminFrame();
+    }
+
+    static class AdminFrame extends JFrame implements ActionListener {
+
+        JLabel AdminID, AdminPass;
+        JTextField t1;
+        JPasswordField t2;
+        JButton login, reset, show, hide;
+        JLabel msg;
+
+        AdminFrame() { // Shu
+
+            setTitle("Admin Menu");
+            setSize(400, 300);
+            setLocationRelativeTo(null);
+            setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            Container e = getContentPane();
+            e.setLayout(null);
+
+            AdminID = new JLabel("ID :");
+            AdminID.setFont(new Font("Tahoma", Font.PLAIN, 20));
+            AdminID.setBounds(20, 50, 150, 20);
+            e.add(AdminID);
+
+            t1 = new JTextField();
+            t1.setBounds(200, 50, 150, 20);
+            e.add(t1);
+
+            AdminPass = new JLabel("Password :");
+            AdminPass.setFont(new Font("Tahoma", Font.PLAIN, 20));
+            AdminPass.setBounds(20, 100, 150, 20);
+            e.add(AdminPass);
+
+            t2 = new JPasswordField();
+            t2.setBounds(200, 100, 150, 20);
+            e.add(t2);
+
+            login = new JButton("Login");
+            login.setBounds(220, 150, 80, 40);
+            login.addActionListener(this);
+            e.add(login);
+
+            reset = new JButton("Reset");
+            reset.setBounds(90, 150, 80, 40);
+            reset.addActionListener(this);
+            e.add(reset);
+
+            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\show.png")); // add dir
+            show.setBounds(220,120,30,20);
+            show.addActionListener(this);
+            e.add(show);
+
+            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\hide.png"));
+            hide.setBounds(265,120,30,20);
+            hide.addActionListener(this);
+            e.add(hide);
+
+            msg = new JLabel("");
+            msg.setBounds(280, 260, 250, 20);
+            e.add(msg);
+
+            setVisible(true);
+
+        }
+
+        public void actionPerformed(ActionEvent e) { // Arif
+
+            String id = t1.getText();
+            String pass = new String(t2.getPassword());
+
+            // Reading JSON file - To check with login data
+
+            JSONParser jsonParser = new JSONParser();
+
+            // Parsing the contents of the JSON file
+
+            try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\loginData.json")) {
+
+                Object obj = jsonParser.parse(reader);
+                JSONObject loginData = (JSONObject) obj;
+
+                Object admin = loginData.get("admin");
+                JSONObject adminData = (JSONObject) admin;
+
+                JSONArray ID = (JSONArray) adminData.get("ID");
+                JSONArray adminPass = (JSONArray) adminData.get("pass");
+
+                boolean found = false;
+                int foundIndex = 0;
+
+                for (int i = 0; i < ID.size(); i++) { // To check if phone number entered is registered
+
+                    if (ID.get(i).equals(id)) {
+                        found = true;
+                        foundIndex = i;
+                    }
+
+                }
+
+                String message = "Welcome, " + ID.get(foundIndex) + "!";
+
+                if (e.getSource() == login) {
+
+                    if (!found) {
+                        JOptionPane.showMessageDialog(login, "Invalid ID!");
+                    }
+
+                    else {
+
+                        if (pass.equals(adminPass.get(foundIndex))) {
+                            JOptionPane.showMessageDialog(login, message);
+                            dispose();
+                            menu.adminMenu();
+                        } else {
+                            JOptionPane.showMessageDialog(login, "Incorrect password!");
+                        }
+
+                    }
+
+                } else if (e.getSource() == reset) {
+                    String def = "";
+                    t1.setText(def);
+                    t2.setText(def);
+
+                } else if (e.getSource() == show) {
+                    t2.setEchoChar((char)0);
+                }
+                else if (e.getSource() == hide) {
+                    t2.setEchoChar('*');
+                }
+
+            } catch (FileNotFoundException f) {
+                f.printStackTrace();
+            } catch (IOException f) {
+                f.printStackTrace();
+            } catch (ParseException f) {
+                f.printStackTrace();
+            }
+
+        }
 
     }
 

@@ -19,22 +19,22 @@ public class mainApp {
 
     1. Never clear screen - Accomplished using line-by-line console action or GUI (preferably the latter) [/]
 
-    2. Pre-load with 5 customers (when the program starts) - Accomplished using json file to store data []
+    2. Pre-load with 5 customers (when the program starts) - Accomplished using json file to store data [~]
 
-    3. Pre-load with 4 shops - Accomplished using json file to store data []
+    3. Pre-load with 4 shops - Accomplished using json file to store data [/]
 
     4. Have a feature to add 30 random visits to the master visit history (random shops, random
        visitors, time ranging from yesterday until current system time). Sort the master visit history
-       by date and time. - Accomplished with a function []
+       by date and time. - Accomplished with a function [/]
 
     Final Submission Requirement :
 
-    1. Java source code. Make sure the code can be compiled and run. [X]
+    1. Java source code. Make sure the code can be compiled and run. [/]
 
     2. Java documentation (Javadoc) for a class. Choose a class that have methods with parameter
     and return type. [X]
 
-    3. A file named Members.txt that lists down the group members’ ID, name, and contribution. [~]
+    3. A file named Members.txt that lists down the group members’ ID, name, and contribution. [/]
 
      */
 
@@ -43,7 +43,8 @@ public class mainApp {
     public static void main(String[] args) {
 
         Customer.initializeCustomerList(); // Initialize CustomerList at the start of program
-        menu.startMenu();
+        Shop.initializeShopList(); // Initialize ShopList at the start of program
+        menu.startMenu(); // Start of entire program's menu system
 
     }
 
@@ -51,7 +52,8 @@ public class mainApp {
 
 class menu { // Shu & Arif
 
-    public static String loggedInPhone = "0195564321"; // test variable
+    public static String loggedInPhone = "";
+    public static String loggedInShop = "";
     public static boolean registerStat = false;
     public static String currentCheck_InLog = "";
     public static String lastFlagTime = "";
@@ -96,6 +98,21 @@ class menu { // Shu & Arif
     }
 
     public static void userMenu() {
+
+        String name = "";
+
+        for(int i=0; i < Customer.CustomerList.size(); i++) {
+
+            String checkPhone = Customer.CustomerList.get(i).getPhoneNum();
+            if (checkPhone.equals(menu.loggedInPhone)) {
+
+                name = Customer.CustomerList.get(i).getFName();
+
+            }
+
+        }
+
+        System.out.println("\nCurrently logged in user : " + name);
 
         System.out.println("\n");
         System.out.println ("________________________________________________________________________________________");
@@ -188,6 +205,25 @@ class options {
 
     }
 
+    public static int afterChoice() {
+
+        int opt;
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("\nWould you like to return to the previous menu or sign out and quit to the start menu?\n");
+        System.out.println("To return to the previous menu, enter 9.");
+        System.out.println("If you wish to quit to the start menu, enter 0.\n");
+        opt = s.nextInt();
+
+        while (opt != 0 && opt != 9) {
+            System.err.println("\nUnrecognized option!\n");
+            confirmChoice();
+        }
+
+        return opt;
+
+    }
+
     public static void option1() {
 
         Scanner input = new Scanner(System.in);
@@ -210,7 +246,8 @@ class options {
                 if (opt == 0) {
                     menu.startMenu();
                 } else {
-                    // shop login or just select shop in shopmenu - depends on time
+                    int shopSelection = Shop.selectShop();
+                    menu.loggedInShop = "" + Shop.ShopList.get(shopSelection).getShopName();
                     menu.shopMenu();
                 }
                 break;
@@ -221,8 +258,7 @@ class options {
                 if (opt == 0) {
                     menu.startMenu();
                 } else {
-                    // admin login
-                    menu.adminMenu();
+                    Admin_Login.adminLogin();
                 }
                 break;
 
@@ -259,18 +295,17 @@ class options {
                 if (opt == 0) {
                     menu.loginMenu();
                 } else {
-                    menu.registerStat = Register.custRegister();
+                    Register.custRegister();
                 }
                 break;
 
             case 2:
                 System.out.println("\nSign In\n");
-                //opt = confirmChoice();
+                opt = confirmChoice();
                 if (opt == 0) {
                     menu.loginMenu();
                 } else {
-                    menu.loggedInPhone = Login.custLogin();
-                    //menu.userMenu();
+                    Login.custLogin();
                 }
                 break;
 
@@ -296,7 +331,7 @@ class options {
                 if (opt == 0) {
                     menu.userMenu();
                 } else {
-                    menu.currentCheck_InLog = Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
+                    Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
                     String[] logSplit = menu.currentCheck_InLog.split(" ");
                     //check_InFrame();
                     //menu.lastFlagTime = "" + logSplit[logSplit.length];
@@ -330,7 +365,7 @@ class options {
                     menu.userMenu();
                 } else {
                     menu.loggedInPhone = "";
-                    menu.loginMenu();
+                    menu.startMenu();
                 }
                 break;
 
@@ -354,7 +389,7 @@ class options {
                 if (opt == 0) {
                     menu.shopMenu();
                 } else {
-                    // view shop status
+                    Shop.viewShopStatus(menu.loggedInShop);
                 }
                 break;
 
@@ -364,7 +399,8 @@ class options {
                 if (opt == 0) {
                     menu.shopMenu();
                 } else {
-                    // return to menu.startmenu
+                    menu.loggedInShop = "";
+                    menu.startMenu();
                 }
                 break;
 
@@ -389,7 +425,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // view all customers - fetch function
+                            Admin.viewCustomer();
                         }
                         break;
 
@@ -399,7 +435,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // view all shops - function not created
+                            Admin.viewShop();
                         }
                         break;
 
@@ -409,7 +445,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // view master history - function incomplete
+                            Admin.viewMaster();
                         }
                         break;
 
@@ -419,7 +455,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // flag customer - just fetch function
+                            Admin.flagCustomer();
                         }
                         break;
 
@@ -429,7 +465,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // add 30 random visits - function not created
+                            Admin.add30Visits();
                         }
                         break;
 
@@ -439,7 +475,7 @@ class options {
                         if (opt == 0) {
                             menu.adminMenu();
                         } else {
-                            // sign out
+                            menu.startMenu();
                         }
                         break;
 

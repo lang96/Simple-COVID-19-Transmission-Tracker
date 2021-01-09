@@ -7,7 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Shop { // Shu
 
@@ -47,6 +50,72 @@ public class Shop { // Shu
     // setters
     public void setStatus(String shopStatus) {
         this.shopStatus = shopStatus;
+    }
+
+    // list and JSON methods
+    public String toString(int shopIndex) {
+
+        return String.format("%-2s %-15s  %-15s  \n", shopIndex+1, shopName, shopManager);
+
+    }
+
+    // program feature methods
+    public static int selectShop() {
+
+        int opt = 0;
+
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("\nWhich shop would you like to sign in as?\n");
+
+        for(int i = 0; i < Shop.ShopList.size(); i++) {
+
+            String output = Shop.ShopList.get(i).toString(i);
+            System.out.println(output);
+
+        }
+
+        System.out.println("Enter the index (no) of the shop: \n");
+
+        opt = s.nextInt();
+        opt -= 1;
+
+        while (opt < 0 && opt > Shop.ShopList.size()) {
+            System.err.println("\nUnrecognized option!\n");
+        }
+
+        return opt;
+
+    }
+
+    public static void viewShopStatus(String shop) {
+
+        String status = "";
+        String manager = "";
+
+        for(int i = 0; i < Shop.ShopList.size(); i++) {
+
+            if(shop.equals(Shop.ShopList.get(i).getShopName())) {
+
+                status = "" + Shop.ShopList.get(i).getShopStatus();
+                manager = "" + Shop.ShopList.get(i).getShopManager();
+                break;
+
+            }
+
+        }
+
+        System.out.println("\nWelcome " + manager + " !\n");
+        System.out.println(shop + "'s " + "status is " + status + ".\n");
+
+        int opt = options.afterChoice();
+
+        if(opt == 9) {
+            menu.shopMenu();
+        } else {
+            menu.startMenu();
+        }
+
     }
 
     // accompanying methods
@@ -146,6 +215,8 @@ public class Shop { // Shu
     }
 
 }
+
+
 
 
 

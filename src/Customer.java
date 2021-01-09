@@ -26,6 +26,7 @@ public class Customer { // Arif
     // public members
     public static final String defStatus = "Normal";
     public static ArrayList<Customer> CustomerList = new ArrayList<>();
+    public static int check_InTotal = 0;
 
     // constructor
     public Customer(String custFName, String custLName, String custPhone, String custPass) {
@@ -410,16 +411,12 @@ public class Customer { // Arif
 // program feature classes with methods
 class Register { // Shu & edit name
 
-    public static boolean custRegister() {
-
+    public static void custRegister() {
         registerFrame frame = new registerFrame();
-        return registerFrame.regStatus;
-
     }
 
     static class registerFrame extends JFrame implements ActionListener{
 
-        public static boolean regStatus = false;
         JLabel firstName,lastName,phoneNumber,pass;
         JTextField t1,t2,t3,t4;
         JButton submit;
@@ -429,7 +426,7 @@ class Register { // Shu & edit name
 
         registerFrame() {
 
-            setTitle("Registration Menu (KUTS)");
+            setTitle("Registration Menu");
             setSize(700, 400);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -523,7 +520,7 @@ class Register { // Shu & edit name
                     } else {
                         Customer.appendToCustomerList(fName, lName, phoneNum, pass);
                         JOptionPane.showMessageDialog(submit, message);
-                        regStatus = true;
+                        menu.registerStat = true;
                         dispose();
                         menu.loginMenu();
                     }
@@ -552,27 +549,25 @@ class Register { // Shu & edit name
 
     }
 
-} // buffer issue
+} // complete
 
 class Login { // Shu & Arif
 
-    public static String custLogin() {
+    public static void custLogin() {
         loginFrame frame = new loginFrame();
-        return loginFrame.loggedInUserPhone;
     }
 
     static class loginFrame extends JFrame implements ActionListener {
 
-        public static String loggedInUserPhone;
         JLabel loginPhone, loginPass;
         JTextField t1;
         JPasswordField t2;
-        JButton login,reset;
+        JButton login,reset,show,hide;
         JLabel msg;
 
         loginFrame() { // Shu
 
-            setTitle("Login Menu (KUTS)");
+            setTitle("Login Menu");
             setSize(400, 300);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -606,6 +601,16 @@ class Login { // Shu & Arif
             reset.setBounds(90,150,80,40);
             reset.addActionListener(this);
             e.add(reset);
+
+            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\show.png")); // add dir
+            show.setBounds(220,120,30,20);
+            show.addActionListener(this);
+            e.add(show);
+
+            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\hide.png"));
+            hide.setBounds(265,120,30,20);
+            hide.addActionListener(this);
+            e.add(hide);
 
             msg=new JLabel("");
             msg.setBounds(280,260,250,20);
@@ -687,7 +692,7 @@ class Login { // Shu & Arif
 
                             if (pass.equals(customerPass.get(foundIndex))) {
                                 JOptionPane.showMessageDialog(login, message);
-                                loggedInUserPhone = "" + phone;
+                                menu.loggedInPhone = "" + phone;
                                 dispose();
                                 menu.userMenu();
                             } else {
@@ -700,6 +705,11 @@ class Login { // Shu & Arif
                         String def = "";
                         t1.setText(def);
                         t2.setText(def);
+                    } else if (e.getSource() == show) {
+                        t2.setEchoChar((char)0);
+                    }
+                    else if (e.getSource() == hide) {
+                        t2.setEchoChar('*');
                     }
 
                 } catch (FileNotFoundException f) {
@@ -722,7 +732,7 @@ class Login { // Shu & Arif
 
     }
 
-} // buffer issue & edit name
+} // complete
 
 class Check_In { // Shu
 
@@ -746,10 +756,11 @@ class Check_In { // Shu
 
     }
 
-    public static boolean checkLastFlag(String lastFlagTime) {
+    public static boolean checkLastFlag() {
 
         boolean flag = false;
         long diff = 0;
+        String lastFlagTime = "";
 
         lastFlagTime = menu.lastFlagTime;
 
@@ -767,29 +778,9 @@ class Check_In { // Shu
 
     }
 
-    public static String custCheck_In(String loginPhone) {
+    public static void custCheck_In(String loginPhone) {
 
         check_InFrame frame = new check_InFrame();
-
-        String status = getStatus(loginPhone);
-        boolean flag = checkLastFlag(check_InFrame.lastFlag);
-
-        if(status.equals("Case")) {
-
-            check_InFrame.lastFlag = Admin.flagShop(check_InFrame.check_InShop, check_InFrame.check_InDate, check_InFrame.check_InTime);
-
-        } else {
-
-            if(flag) {
-
-                check_InFrame.lastFlag = Admin.flagShop(check_InFrame.check_InShop, check_InFrame.check_InDate, check_InFrame.check_InTime);
-
-            }
-
-        }
-
-        return check_InFrame.check_InShop + " " + check_InFrame.check_InDate + " "
-                + check_InFrame.check_InTime + check_InFrame.loginPhone + " " + check_InFrame.lastFlag;
 
     }
 
@@ -799,6 +790,7 @@ class Check_In { // Shu
         public static String check_InDate;
         public static String check_InTime;
         public static String lastFlag;
+        public static boolean lastFlagStat;
         public static String loginPhone;
         JLabel Title;
         JButton Tesco, Giant, Econsave, Jaya;
@@ -806,7 +798,7 @@ class Check_In { // Shu
 
         check_InFrame() {
 
-            setTitle("CHECK IN SHOP (KUTS)"); // fix
+            setTitle("Check-In Shop");
             setSize(400, 300);
             setLocationRelativeTo(null);
             setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -861,44 +853,184 @@ class Check_In { // Shu
                 JOptionPane.showMessageDialog(Tesco,
                         "Checked-In Tesco at :" + "\n" + formattedDate);
                 check_InShop = "" + "Tesco";
-                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
-                        check_InFrame.check_InTime,check_InFrame.check_InShop);
+
+                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
+                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
+
+                String status = getStatus(loginPhone);
+                if(Customer.check_InTotal == 0) {
+
+                    if(status.equals("Case")) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                } else {
+
+                    lastFlagStat = checkLastFlag();
+                    if(lastFlagStat) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                }
+
+                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
+                menu.lastFlagTime = lastFlag;
+
                 dispose();
-                menu.userMenu();
+                int opt = options.afterChoice();
+
+                if(opt == 9) {
+                    Customer.check_InTotal++;
+                    menu.userMenu();
+                } else {
+                    Customer.check_InTotal++;
+                    menu.loggedInPhone = "";
+                    menu.startMenu();
+                }
+
             }
-            if (e.getSource() == Giant) {
+            else if (e.getSource() == Giant) {
                 JOptionPane.showMessageDialog(Giant,
                         "Checked-In Giant at :" + "\n" + formattedDate);
                 check_InShop = "" + "Giant";
-                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
-                        check_InFrame.check_InTime,check_InFrame.check_InShop);
+
+                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
+                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
+
+                String status = getStatus(loginPhone);
+                if(Customer.check_InTotal == 0) {
+
+                    if(status.equals("Case")) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                } else {
+
+                    lastFlagStat = checkLastFlag();
+                    if(lastFlagStat) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                }
+
+                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
+                menu.lastFlagTime = lastFlag;
+
                 dispose();
-                menu.userMenu();
+                int opt = options.afterChoice();
+
+                if(opt == 9) {
+                    Customer.check_InTotal++;
+                    menu.userMenu();
+                } else {
+                    Customer.check_InTotal++;
+                    menu.loggedInPhone = "";
+                    menu.startMenu();
+                }
+
             }
-            if (e.getSource() == Econsave) {
+            else if (e.getSource() == Econsave) {
                 JOptionPane.showMessageDialog(Econsave,
                         "Checked-In Econsave at :" + "\n" + formattedDate);
                 check_InShop = "" + "Econsave";
-                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
-                        check_InFrame.check_InTime,check_InFrame.check_InShop);
+
+                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
+                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
+
+                String status = getStatus(loginPhone);
+                if(Customer.check_InTotal == 0) {
+
+                    if(status.equals("Case")) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                } else {
+
+                    lastFlagStat = checkLastFlag();
+                    if(lastFlagStat) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                }
+
+                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
+                menu.lastFlagTime = lastFlag;
+
                 dispose();
-                menu.userMenu();
+                int opt = options.afterChoice();
+
+                if(opt == 9) {
+                    Customer.check_InTotal++;
+                    menu.userMenu();
+                } else {
+                    Customer.check_InTotal++;
+                    menu.loggedInPhone = "";
+                    menu.startMenu();
+                }
+
             }
-            if (e.getSource() == Jaya) {
+            else if (e.getSource() == Jaya) {
                 JOptionPane.showMessageDialog(Jaya,
                         "Checked-In Jaya Grocer at :" + "\n" + formattedDate);
                 check_InShop = "" + "Jaya Grocer";
-                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
-                        check_InFrame.check_InTime,check_InFrame.check_InShop);
+
+                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
+                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
+
+                String status = getStatus(loginPhone);
+                if(Customer.check_InTotal == 0) {
+
+                    if(status.equals("Case")) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                } else {
+
+                    lastFlagStat = checkLastFlag();
+                    if(lastFlagStat) {
+
+                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
+
+                    }
+
+                }
+
+                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
+                menu.lastFlagTime = lastFlag;
+
                 dispose();
-                menu.userMenu();
+                int opt = options.afterChoice();
+
+                if(opt == 9) {
+                    Customer.check_InTotal++;
+                    menu.userMenu();
+                } else {
+                    Customer.check_InTotal++;
+                    menu.loggedInPhone = "";
+                    menu.startMenu();
+                }
+
             }
 
         }
 
     }
 
-} // buffer issue & edit name
+} // complete
 
 class ViewHistory { // Arif
 
@@ -946,7 +1078,7 @@ class ViewHistory { // Arif
             System.out.printf("\n%-2s ", "No");
             System.out.printf("%-10s  ", "Date");
             System.out.printf("%-8s  ", "Time");
-            System.out.printf("%-15s \n", "Shop");
+            System.out.printf("%-15s \n\n", "Shop");
 
             int taggedIndex = 0;
 
@@ -958,10 +1090,19 @@ class ViewHistory { // Arif
                     System.out.printf("%-2s ", (taggedIndex));
                     System.out.printf("%-10s  ", date.get(i));
                     System.out.printf("%-8s  ", time.get(i));
-                    System.out.printf("%-15s \n", shop.get(i));
+                    System.out.printf("%-15s \n\n", shop.get(i));
 
                 }
 
+            }
+
+            int opt = options.afterChoice();
+
+            if(opt == 9) {
+                menu.userMenu();
+            } else {
+                menu.loggedInPhone = "";
+                menu.startMenu();
             }
 
         } catch (FileNotFoundException e) {
@@ -1009,30 +1150,15 @@ class CheckStatus { // Arif
 
         System.out.println("\nHi " + name +  " !\n" + "Your status is " + status + ".\n");
 
+        int opt = options.afterChoice();
+
+        if(opt == 9) {
+            menu.userMenu();
+        } else {
+            menu.loggedInPhone = "";
+            menu.startMenu();
+        }
+
     }
 
 } // complete
-
-class autoFlag {
-
-    public static void flagShop(String shop, String date, String time) {
-
-        LocalDateTime timeVar = LocalDateTime.now();
-        DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String formattedDate = timeVar.format(dateVar);
-
-        for (int i = 0; i < Shop.ShopList.size(); i++) {
-
-            if(shop.equals(Shop.ShopList.get(i).getShopName())) {
-
-                Shop.ShopList.get(i).setStatus("Case");
-
-            }
-
-        }
-
-        // access master visit history and change individual
-
-    }
-
-}
