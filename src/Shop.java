@@ -49,6 +49,7 @@ public class Shop { // Shu
         this.shopStatus = shopStatus;
     }
 
+    // accompanying methods
     public static void initializeShopList() { // At the start of program, the CustomerList is initialized from JSON file
 
         JSONParser jsonParser = new JSONParser();

@@ -75,7 +75,6 @@ public class Customer { // Arif
     }
 
     // list and JSON methods
-
     public String toString(int index) {
 
         String fullName = custFName + " " + custLName;
@@ -92,6 +91,7 @@ public class Customer { // Arif
 
     }
 
+    // accompanying methods
     public static void initializeCustomerList() { // At the start of program, the CustomerList is initialized from JSON file
 
         JSONParser jsonParser = new JSONParser();
@@ -157,34 +157,6 @@ public class Customer { // Arif
         } catch (ParseException f) {
                 f.printStackTrace();
         }
-
-    }
-
-    public static ArrayList<Integer>displayCustomerListToFlag()  {
-
-        System.out.printf("\n%-2s %-15s  %-11s  %-6s \n\n", "No", "Name", "Phone", "Status");
-
-        int outputIndex = 0;
-        ArrayList<Integer> flagIndex = new ArrayList<>();
-
-        for(int i=0; i < CustomerList.size(); i++) {
-
-            if (CustomerList.get(i).custStatus.equals("Case")) {
-                continue;
-            }
-            else if (CustomerList.get(i).custStatus.equals("Close")) {
-                continue;
-            }
-            else {
-                outputIndex++;
-                String output = CustomerList.get(i).toString(outputIndex);
-                flagIndex.add(i);
-                System.out.println(output);
-            }
-
-        }
-
-        return flagIndex;
 
     }
 
@@ -405,81 +377,37 @@ public class Customer { // Arif
 
     }
 
-    public static void appendToMasterHistory(String loginPhone, String check_InDate, String check_InTime, String check_InShop) {
+    public static ArrayList<Integer>displayCustomerListToFlag()  {
 
-        JSONParser jsonParser = new JSONParser();
+        System.out.printf("\n%-2s %-15s  %-11s  %-6s \n\n", "No", "Name", "Phone", "Status");
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        int outputIndex = 0;
+        ArrayList<Integer> flagIndex = new ArrayList<>();
 
-            Object obj = jsonParser.parse(reader);
-            JSONObject visit = (JSONObject) obj;
+        for(int i=0; i < CustomerList.size(); i++) {
 
-            JSONArray visitDate = (JSONArray) visit.get("date");
-            JSONArray visitTime = (JSONArray) visit.get("time");
-            JSONArray visitName = (JSONArray) visit.get("customerName");
-            JSONArray visitShop = (JSONArray) visit.get("shop");
-
-            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\customerData.json")) {
-
-                Object obj2 = jsonParser.parse(reader2);
-                JSONObject customer = (JSONObject) obj2;
-
-                JSONArray phoneNum = (JSONArray) customer.get("phoneNum");
-                JSONArray name = (JSONArray) customer.get("fName");
-
-                String appendName = "";
-                for(int i = 0; i < phoneNum.size(); i++) {
-
-                    if(loginPhone.equals(phoneNum.get(i))) {
-                        appendName = "" + name.get(i);
-                        System.out.println(name);
-                        break;
-                    }
-
-                }
-
-                visitDate.add(check_InDate);
-                visitTime.add(check_InTime);
-                visitName.add(appendName);
-                visitShop.add(check_InShop);
-
-                visit.put("date", visitDate);
-                visit.put("time", visitTime);
-                visit.put("customerName", visitName);
-                visit.put("shop", visitShop);
-
-                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                        "\\res\\data\\visitHistory.json")) {
-
-                    fileWrite.write(visit.toJSONString());
-                    fileWrite.flush();
-
-                } catch (IOException ef) {
-                    ef.printStackTrace();
-                }
-
-            } catch (FileNotFoundException f) {
-                f.printStackTrace();
-            } catch (IOException f) {
-                f.printStackTrace();
-            } catch (ParseException f) {
-                f.printStackTrace();
+            if (CustomerList.get(i).custStatus.equals("Case")) {
+                continue;
+            }
+            else if (CustomerList.get(i).custStatus.equals("Close")) {
+                continue;
+            }
+            else {
+                outputIndex++;
+                String output = CustomerList.get(i).toString(outputIndex);
+                flagIndex.add(i);
+                System.out.println(output);
             }
 
-        } catch (FileNotFoundException f) {
-            f.printStackTrace();
-        } catch (IOException f) {
-            f.printStackTrace();
-        } catch (ParseException f) {
-            f.printStackTrace();
         }
+
+        return flagIndex;
 
     }
 
 }
 
+// program feature classes with methods
 class Register { // Shu & edit name
 
     public static boolean custRegister() {
@@ -933,7 +861,7 @@ class Check_In { // Shu
                 JOptionPane.showMessageDialog(Tesco,
                         "Checked-In Tesco at :" + "\n" + formattedDate);
                 check_InShop = "" + "Tesco";
-                Customer.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
+                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
                         check_InFrame.check_InTime,check_InFrame.check_InShop);
                 dispose();
                 menu.userMenu();
@@ -942,7 +870,7 @@ class Check_In { // Shu
                 JOptionPane.showMessageDialog(Giant,
                         "Checked-In Giant at :" + "\n" + formattedDate);
                 check_InShop = "" + "Giant";
-                Customer.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
+                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
                         check_InFrame.check_InTime,check_InFrame.check_InShop);
                 dispose();
                 menu.userMenu();
@@ -951,7 +879,7 @@ class Check_In { // Shu
                 JOptionPane.showMessageDialog(Econsave,
                         "Checked-In Econsave at :" + "\n" + formattedDate);
                 check_InShop = "" + "Econsave";
-                Customer.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
+                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
                         check_InFrame.check_InTime,check_InFrame.check_InShop);
                 dispose();
                 menu.userMenu();
@@ -960,7 +888,7 @@ class Check_In { // Shu
                 JOptionPane.showMessageDialog(Jaya,
                         "Checked-In Jaya Grocer at :" + "\n" + formattedDate);
                 check_InShop = "" + "Jaya Grocer";
-                Customer.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
+                Admin.appendToMasterHistory(check_InFrame.loginPhone,check_InFrame.check_InDate,
                         check_InFrame.check_InTime,check_InFrame.check_InShop);
                 dispose();
                 menu.userMenu();
