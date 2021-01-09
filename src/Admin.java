@@ -5,8 +5,11 @@ import org.json.simple.parser.ParseException;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
+import java.lang.reflect.Array;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import java.time.LocalDateTime;
@@ -16,9 +19,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Random;
 
 public class Admin {
 
+    // methods
+
+    // program feature methods
     public static void adminLogin() {
 
         System.out.println ("                                   -------------                                        ");
@@ -185,39 +192,6 @@ public class Admin {
 
     } // complete
 
-    public static int choice(ArrayList<Integer> flagIndex, int index) { // For flagCustomer()
-
-        int opt = -1;
-        Scanner s = new Scanner(System.in);
-        boolean choice = false;
-
-        do {
-            try {
-
-                System.out.println("Which customer would you like to flag?\n");
-                System.out.println("Enter the index (no) of the customer: \n");
-                opt = s.nextInt();
-                choice = true;
-                opt -= 1;
-                if (opt < 0 || opt > flagIndex.size()) {
-                    System.err.println ("\nUnrecognized option!\n");
-                    choice(flagIndex, index);
-                } else {
-                    index = flagIndex.get(opt);
-                }
-
-            } catch (InputMismatchException ex) {
-                choice = false;
-                System.out.println("\nInvalid Input!\n");
-                s.nextLine();
-            }
-
-        } while (choice==false);
-
-        return index;
-
-    }
-
     public static void flagCustomer() {
 
         // This function allows admin to flag a customer as a positive case of CoViD-19.
@@ -241,37 +215,6 @@ public class Admin {
 
         // between 11 pm and 1 am
 
-
-    }
-
-    public static long findDifference(String beginDate, String endDate) {
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        long timeDifference;
-        long minutesDifference = 0;
-
-        try {
-
-            Date d1 = sdf.parse(beginDate);
-            Date d2 = sdf.parse(endDate);
-
-            int beforeAfter = d1.compareTo(d2);
-
-            if (beforeAfter == -1) {
-                timeDifference = d2.getTime() - d1.getTime();
-            } else if (beforeAfter == 1) {
-                timeDifference = d1.getTime() - d2.getTime();
-            } else {
-                timeDifference = 0;
-            }
-
-            minutesDifference = (timeDifference / (1000 * 60)) % 60;
-
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-        return minutesDifference;
 
     }
 
@@ -385,7 +328,7 @@ public class Admin {
 
         return fullDateTime;
 
-    } // complete
+    } // incomplete
 
     public static void addVisit() {
 
@@ -393,7 +336,200 @@ public class Admin {
         // - master visit history. These visits are generated using the existing list of customers and shops from -
         // - application data files (json).
 
+        // get name, shop arrays
+
+        ArrayList<String> nameArr = new ArrayList<>();
+        ArrayList<String> shopArr = new ArrayList<>();
+
+        // loop through customers to get customer names
+        for (int i = 0; i < Customer.CustomerList.size(); i++) {
+
+            nameArr.add(Customer.CustomerList.get(i).getFName());
+
+        }
+
+        // loop through shops to get shop names
+        for (int i = 0; i < Shop.ShopList.size(); i++) {
+
+            shopArr.add(Shop.ShopList.get(i).getShopName());
+
+        }
+
+        // get random element from arrays
+        getRandomString(nameArr);
+        getRandomString(shopArr);
+
+        // get random time
+
+
     } // not created
+
+
+    // accompanying methods
+    public static void appendToMasterHistory(String loginPhone, String check_InDate, String check_InTime, String check_InShop) {
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            JSONArray visitDate = (JSONArray) visit.get("date");
+            JSONArray visitTime = (JSONArray) visit.get("time");
+            JSONArray visitName = (JSONArray) visit.get("customerName");
+            JSONArray visitShop = (JSONArray) visit.get("shop");
+
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                    "\\res\\data\\customerData.json")) {
+
+                Object obj2 = jsonParser.parse(reader2);
+                JSONObject customer = (JSONObject) obj2;
+
+                JSONArray phoneNum = (JSONArray) customer.get("phoneNum");
+                JSONArray name = (JSONArray) customer.get("fName");
+
+                String appendName = "";
+                for(int i = 0; i < phoneNum.size(); i++) {
+
+                    if(loginPhone.equals(phoneNum.get(i))) {
+                        appendName = "" + name.get(i);
+                        System.out.println(name);
+                        break;
+                    }
+
+                }
+
+                visitDate.add(check_InDate);
+                visitTime.add(check_InTime);
+                visitName.add(appendName);
+                visitShop.add(check_InShop);
+
+                visit.put("date", visitDate);
+                visit.put("time", visitTime);
+                visit.put("customerName", visitName);
+                visit.put("shop", visitShop);
+
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                        "\\res\\data\\visitHistory.json")) {
+
+                    fileWrite.write(visit.toJSONString());
+                    fileWrite.flush();
+
+                } catch (IOException ef) {
+                    ef.printStackTrace();
+                }
+
+            } catch (FileNotFoundException f) {
+                f.printStackTrace();
+            } catch (IOException f) {
+                f.printStackTrace();
+            } catch (ParseException f) {
+                f.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
+    public static int choice(ArrayList<Integer> flagIndex, int index) { // For flagCustomer()
+
+        int opt = -1;
+        Scanner s = new Scanner(System.in);
+        boolean choice = false;
+
+        do {
+            try {
+
+                System.out.println("Which customer would you like to flag?\n");
+                System.out.println("Enter the index (no) of the customer: \n");
+                opt = s.nextInt();
+                choice = true;
+                opt -= 1;
+                if (opt < 0 || opt > flagIndex.size()) {
+                    System.err.println ("\nUnrecognized option!\n");
+                    choice(flagIndex, index);
+                } else {
+                    index = flagIndex.get(opt);
+                }
+
+            } catch (InputMismatchException ex) {
+                choice = false;
+                System.out.println("\nInvalid Input!\n");
+                s.nextLine();
+            }
+
+        } while (choice==false);
+
+        return index;
+
+    }
+
+    public static long findDifference(String beginDate, String endDate) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        long timeDifference;
+        long minutesDifference = 0;
+
+        try {
+
+            Date d1 = sdf.parse(beginDate);
+            Date d2 = sdf.parse(endDate);
+
+            int beforeAfter = d1.compareTo(d2);
+
+            if (beforeAfter == -1) {
+                timeDifference = d2.getTime() - d1.getTime();
+            } else if (beforeAfter == 1) {
+                timeDifference = d1.getTime() - d2.getTime();
+            } else {
+                timeDifference = 0;
+            }
+
+            minutesDifference = (timeDifference / (1000 * 60)) % 60;
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        return minutesDifference;
+
+    }
+
+    public static String getRandomDate() throws java.text.ParseException {
+
+        long startPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Jan-2021").getTime();
+        long endPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Feb-2021").getTime();
+
+        Random randomTime = new Random();
+        long timePeriod = endPoint - startPoint;
+        long randomTimeStamp = startPoint + (long) (randomTime.nextDouble() * timePeriod);
+
+        String outputTimeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Timestamp(randomTimeStamp));
+
+        String[] splitDateTime = outputTimeStamp.split(" ");
+        String outputDate = "" + splitDateTime[0];
+        String outputTime = "" + splitDateTime[1];
+
+    }
+
+    public static String getRandomString(ArrayList<String> paramArr) {
+
+        Random r = new Random();
+        int randomIndex = r.nextInt(paramArr.size());
+        String random = paramArr.get(randomIndex);
+
+        return random;
+
+    }
+
 
     // Test main module only
     public static void main(String[] args) throws java.text.ParseException {

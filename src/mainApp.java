@@ -162,6 +162,13 @@ class menu { // Shu & Arif
 
 class options {
 
+    public static int checkInput() {
+
+        int opt = 0;
+
+        return opt;
+    }
+
     public static int confirmChoice() {
 
         int opt;
