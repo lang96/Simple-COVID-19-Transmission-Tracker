@@ -13,18 +13,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import java.lang.reflect.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.InputMismatchException;
-import java.util.Scanner;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 public class Admin {
 
@@ -35,56 +31,40 @@ public class Admin {
 
         // This function allows admin to view the master visit history of the entire system.
 
-        // Reading JSON file \\
+        List<Visit.DateItem> sortedHistory;
 
-        JSONParser jsonParser = new JSONParser();
+        Visit.initializeVisitList();
+        sortedHistory = Visit.sortVisitHistory();
 
-        // Parsing the contents of the JSON file
+        String sortedDate;
+        String sortedTime;
+        String sortedCustomer;
+        String sortedShop;
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        System.out.printf("\n%-2s ", "No");
+        System.out.printf("%-10s  ", "Date");
+        System.out.printf("%-8s  ", "Time");
+        System.out.printf("%-10s  ", "Customer");
+        System.out.printf("%-10s  \n\n", "Shop");
 
-            Object obj = jsonParser.parse(reader);
-            JSONObject visit = (JSONObject) obj;
+        for(int i = 0; i < sortedHistory.size(); i++) {
 
-            JSONArray date = (JSONArray) visit.get("date");
-            JSONArray time = (JSONArray) visit.get("time");
-            JSONArray customer = (JSONArray) visit.get("customerName");
-            JSONArray shop = (JSONArray) visit.get("shop");
+            String temp = String.valueOf(sortedHistory.get(i).getDateTime());
+            String[] tempList = temp.split(" ");
 
-            // Table output
+            sortedDate = "" + tempList[0];
+            sortedTime = "" + tempList[1];
+            sortedCustomer = "" + tempList[2];
+            sortedShop = "" + tempList[3];
 
-            System.out.printf("\n%-2s ", "No");
-            System.out.printf("%-10s  ", "Date");
-            System.out.printf("%-8s  ", "Time");
-            System.out.printf("%-15s ", "Customer");
-            System.out.printf("%-15s \n\n", "Shop");
+            System.out.printf("%-2s ", i+1);
+            System.out.printf("%-10s  ", sortedDate);
+            System.out.printf("%-8s  ", sortedTime);
+            System.out.printf("%-10s  ", sortedCustomer);
+            System.out.printf("%-10s  \n\n", sortedShop);
 
-            for (int i = 0;i < customer.size();i++) {
-
-                System.out.printf("%-2s ", (i+1));
-                System.out.printf("%-10s  ", date.get(i));
-                System.out.printf("%-8s  ", time.get(i));
-                System.out.printf("%-15s ", customer.get(i));
-                System.out.printf("%-15s \n\n", shop.get(i));
-
-            }
-
-            int opt = options.afterChoice();
-
-            if(opt == 9) {
-                menu.adminMenu();
-            } else {
-                menu.startMenu();
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
+
 
     } // complete
 
@@ -174,7 +154,7 @@ public class Admin {
             // Table output
 
             System.out.printf("\n%-2s ", "No");
-            System.out.printf("%-15s  ", "Name");
+            System.out.printf("%-10s  ", "Name");
             System.out.printf("%-11s  ", "Phone");
             System.out.printf("%-15s  ", "Manager");
             System.out.printf("%-6s \n\n", "Status");
@@ -182,7 +162,7 @@ public class Admin {
             for (int i = 0;i < phoneNum.size();i++) {
 
                 System.out.printf("%-2s ", (i+1));
-                System.out.printf("%-15s  ", name.get(i));
+                System.out.printf("%-10s  ", name.get(i));
                 System.out.printf("%-11s  ", phoneNum.get(i));
                 System.out.printf("%-15s  ", manager.get(i));
                 System.out.printf("%-6s \n\n", status.get(i));
@@ -369,13 +349,13 @@ public class Admin {
 
         }
 
-        int opt = options.afterChoice();
-
-        if(opt == 9) {
-            menu.adminMenu();
-        } else {
-            menu.startMenu();
-        }
+//        int opt = options.afterChoice();
+//
+//        if(opt == 9) {
+//            menu.adminMenu();
+//        } else {
+//            menu.startMenu();
+//        }
 
     } // complete
 
@@ -676,6 +656,128 @@ public class Admin {
 
         return random;
 
+    }
+
+    public static void main(String[] args) {
+
+        Customer.initializeCustomerList();
+        Shop.initializeShopList();
+        viewMaster();
+    }
+
+}
+
+class Visit {
+
+    // private members
+    private String visitDate, visitTime, visitCustomer, visitShop;
+
+    // public members
+    public static ArrayList<Visit> VisitList = new ArrayList<>();
+
+    // constructor
+    Visit(String visitDate, String visitTime, String visitCustomer, String visitShop) {
+
+        this.visitDate = visitDate;
+        this.visitTime = visitTime;
+        this.visitCustomer = visitCustomer;
+        this.visitShop = visitShop;
+
+    }
+
+    // methods
+
+    // getters
+    public String getVisitDate() { return this.visitDate; }
+
+    public String getVisitTime() {
+        return this.visitTime;
+    }
+
+    public String getVisitCustomer() {
+        return this.visitCustomer;
+    }
+
+    public String getVisitShop() {
+        return this.visitShop;
+    }
+
+    // accompanying methods
+    public static void initializeVisitList() { // At the start of program, the VisitList is initialized from JSON file
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
+                "\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            JSONArray visitDate = (JSONArray) visit.get("date");
+            JSONArray visitTime = (JSONArray) visit.get("time");
+            JSONArray visitName = (JSONArray) visit.get("customerName");
+            JSONArray visitShop = (JSONArray) visit.get("shop");
+
+            for(int i = 0; i < visitDate.size(); i++) {
+
+                String appendDate = "" + visitDate.get(i);
+                String appendTime = "" + visitTime.get(i);
+                String appendName = "" + visitName.get(i);
+                String appendShop = "" + visitShop.get(i);
+
+
+                VisitList.add(new Visit(appendDate, appendTime, appendName, appendShop));
+
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
+    public static List<DateItem> sortVisitHistory() {
+
+        String visitLog = "";
+
+        List<DateItem> visitLogArr = new ArrayList<>();
+
+        for(int i = 0; i < VisitList.size(); i++) {
+
+            visitLog = "" + VisitList.get(i).getVisitDate() + " " + VisitList.get(i).getVisitTime() + " " +
+                    VisitList.get(i).getVisitCustomer() + " " + VisitList.get(i).getVisitShop();
+
+            visitLogArr.add(new DateItem(visitLog));
+
+        }
+
+        Collections.sort(visitLogArr, new SortByDate());
+
+        return visitLogArr;
+
+    }
+
+    static class DateItem {
+
+        String datetime;
+
+        DateItem(String date) {
+            this.datetime = date;
+        }
+
+        String getDateTime() {return this.datetime;}
+
+    }
+
+    static class SortByDate implements Comparator<DateItem> {
+        @Override
+        public int compare(DateItem a, DateItem b) {
+            return a.datetime.compareTo(b.datetime);
+        }
     }
 
 }

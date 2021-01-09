@@ -128,7 +128,7 @@ public class Customer { // Arif
                     String appendPass = "";
                     String appendStatus = "" + statusArr.get(i);
 
-                    for (int j = 0; j < loginPhoneArr.size(); j++) { // To check if phone number entered is registered
+                    for (int j = 0; j < loginPhoneArr.size(); j++) { // To match phone number to password
 
                         if (loginPhoneArr.get(i).equals(appendPhoneNum)) {
 
@@ -1078,7 +1078,7 @@ class ViewHistory { // Arif
             System.out.printf("\n%-2s ", "No");
             System.out.printf("%-10s  ", "Date");
             System.out.printf("%-8s  ", "Time");
-            System.out.printf("%-15s \n\n", "Shop");
+            System.out.printf("%-10s \n\n", "Shop");
 
             int taggedIndex = 0;
 
@@ -1090,7 +1090,7 @@ class ViewHistory { // Arif
                     System.out.printf("%-2s ", (taggedIndex));
                     System.out.printf("%-10s  ", date.get(i));
                     System.out.printf("%-8s  ", time.get(i));
-                    System.out.printf("%-15s \n\n", shop.get(i));
+                    System.out.printf("%-10s \n\n", shop.get(i));
 
                 }
 
