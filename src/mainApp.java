@@ -53,6 +53,8 @@ class menu { // Shu & Arif
 
     public static String loggedInPhone = "0195564321"; // test variable
     public static boolean registerStat = false;
+    public static String currentCheck_InLog = "";
+    public static String lastFlagTime = "";
 
     public static void startMenu() {
 
@@ -331,7 +333,9 @@ class options {
                         if (opt == 0) {
                             menu.userMenu();
                         } else {
-                            Check_In.custCheck_In(); // works but flow interrupted by buffer
+                            menu.currentCheck_InLog = Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
+                            String[] logSplit = menu.currentCheck_InLog.split(" ");
+                            //menu.lastFlagTime = "" + logSplit[logSplit.length];
                         }
                         break;
 
@@ -361,7 +365,8 @@ class options {
                         if (opt == 0) {
                             menu.userMenu();
                         } else {
-                            // sign out
+                            menu.loggedInPhone = "";
+                            menu.loginMenu();
                         }
                         break;
 

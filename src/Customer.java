@@ -798,10 +798,70 @@ class Login { // Shu & Arif
 
 class Check_In { // Shu
 
-    public static String custCheck_In() {
+    public static String getStatus(String loginPhone) {
+
+        String checkPhone = "";
+        String status = "";
+
+        for(int i=0; i < Customer.CustomerList.size(); i++) {
+
+            checkPhone = Customer.CustomerList.get(i).getPhoneNum();
+            if (checkPhone.equals(loginPhone)) {
+
+                status = Customer.CustomerList.get(i).getStatus();
+
+            }
+
+        }
+
+        return status;
+
+    }
+
+    public static boolean checkLastFlag(String lastFlagTime) {
+
+        boolean flag = false;
+        long diff = 0;
+
+        lastFlagTime = menu.lastFlagTime;
+
+        String date = check_InFrame.check_InDate;
+        String time = check_InFrame.check_InTime;
+        String fullDateTime = date + " " + time;
+
+        diff = Admin.findDifference(fullDateTime, lastFlagTime);
+
+        if (diff >= 0 && diff <= 60) {
+            flag = true;
+        }
+
+        return flag;
+
+    }
+
+    public static String custCheck_In(String loginPhone) {
 
         check_InFrame frame = new check_InFrame();
-        return check_InFrame.check_InShop + " " + check_InFrame.check_InDate + " " + check_InFrame.check_InTime + check_InFrame.loginPhone;
+
+        String status = getStatus(loginPhone);
+        boolean flag = checkLastFlag(check_InFrame.lastFlag);
+
+        if(status.equals("Case")) {
+
+            check_InFrame.lastFlag = Admin.flagShop(check_InFrame.check_InShop, check_InFrame.check_InDate, check_InFrame.check_InTime);
+
+        } else {
+
+            if(flag) {
+
+                check_InFrame.lastFlag = Admin.flagShop(check_InFrame.check_InShop, check_InFrame.check_InDate, check_InFrame.check_InTime);
+
+            }
+
+        }
+
+        return check_InFrame.check_InShop + " " + check_InFrame.check_InDate + " "
+                + check_InFrame.check_InTime + check_InFrame.loginPhone + " " + check_InFrame.lastFlag;
 
     }
 
@@ -810,6 +870,7 @@ class Check_In { // Shu
         public static String check_InShop;
         public static String check_InDate;
         public static String check_InTime;
+        public static String lastFlag;
         public static String loginPhone;
         JLabel Title;
         JButton Tesco, Giant, Econsave, Jaya;
@@ -1023,3 +1084,27 @@ class CheckStatus { // Arif
     }
 
 } // complete
+
+class autoFlag {
+
+    public static void flagShop(String shop, String date, String time) {
+
+        LocalDateTime timeVar = LocalDateTime.now();
+        DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = timeVar.format(dateVar);
+
+        for (int i = 0; i < Shop.ShopList.size(); i++) {
+
+            if(shop.equals(Shop.ShopList.get(i).getShopName())) {
+
+                Shop.ShopList.get(i).setStatus("Case");
+
+            }
+
+        }
+
+        // access master visit history and change individual
+
+    }
+
+}
