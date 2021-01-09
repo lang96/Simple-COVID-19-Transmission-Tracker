@@ -6,6 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.text.View;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -42,7 +43,7 @@ public class mainApp {
     public static void main(String[] args) {
 
         Customer.initializeCustomerList(); // Initialize CustomerList at the start of program
-        menu.startMenu();
+        menu.userMenu();
 
     }
 
@@ -50,7 +51,8 @@ public class mainApp {
 
 class menu { // Shu & Arif
 
-    public static String loggedInPhone;
+    public static String loggedInPhone = "0195564321"; // test variable
+    public static boolean registerStat = false;
 
     public static void startMenu() {
 
@@ -278,7 +280,7 @@ class options {
                         if (opt == 0) {
                             menu.loginMenu();
                         } else {
-                            Register.custRegister();
+                            menu.registerStat = Register.custRegister();
                         }
                         break;
 
@@ -289,6 +291,7 @@ class options {
                             menu.loginMenu();
                         } else {
                             menu.loggedInPhone = Login.custLogin();
+                            menu.userMenu();
                         }
                         break;
 
@@ -328,7 +331,7 @@ class options {
                         if (opt == 0) {
                             menu.userMenu();
                         } else {
-                            System.out.println("Check-in");
+                            Check_In.custCheck_In(); // works but flow interrupted by buffer
                         }
                         break;
 
@@ -338,7 +341,7 @@ class options {
                         if (opt == 0) {
                             menu.userMenu();
                         } else {
-                            // visit history
+                            ViewHistory.viewHistory(menu.loggedInPhone);
                         }
                         break;
 
@@ -348,7 +351,7 @@ class options {
                         if (opt == 0) {
                             menu.userMenu();
                         } else {
-                            // check status
+                            CheckStatus.checkStatus(menu.loggedInPhone);
                         }
                         break;
 
