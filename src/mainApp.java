@@ -43,7 +43,7 @@ public class mainApp {
     public static void main(String[] args) {
 
         Customer.initializeCustomerList(); // Initialize CustomerList at the start of program
-        menu.userMenu();
+        menu.startMenu();
 
     }
 
@@ -164,29 +164,16 @@ class options {
 
     public static int confirmChoice() {
 
-        int opt = -1;
+        int opt;
         Scanner s = new Scanner(System.in);
-        boolean choice = false;
 
-        do {
-            try {
-
-                System.out.println("Would you like to proceed or return to the previous menu?\n");
-                System.out.println("To proceed, enter 9.");
-                System.out.println("If you wish to return, enter 0.\n");
-                opt = s.nextInt();
-                choice = true;
-
-            } catch (InputMismatchException ex) {
-                choice = false;
-                System.out.println("\nInvalid Input!\n");
-                confirmChoice();
-            }
-
-        } while (choice==false);
+        System.out.println("Would you like to proceed or return to the previous menu?\n");
+        System.out.println("To proceed, enter 9.");
+        System.out.println("If you wish to return, enter 0.\n");
+        opt = s.nextInt();
 
         while (opt != 0 && opt != 9) {
-            System.err.println ("\nUnrecognized option!\n");
+            System.err.println("\nUnrecognized option!\n");
             confirmChoice();
         }
 
@@ -198,71 +185,57 @@ class options {
 
         Scanner input = new Scanner(System.in);
         int opt = -1;
-        boolean checkOpt = false;
+        switch (input.nextInt()) {
 
-        do {
-            try {
-                switch (input.nextInt()) {
-
-                    case 1:
-                        System.out.println("\nLaunch as Customer\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.startMenu();
-                        } else {
-                            menu.loginMenu();
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\nLaunch as Shop\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.startMenu();
-                        } else {
-                            // shop login or just select shop in shopmenu - depends on time
-                            menu.shopMenu();
-                        }
-                        break;
-
-                    case 3:
-                        System.out.println("\nLaunch as Administrator\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.startMenu();
-                        } else {
-                            // admin login
-                            menu.adminMenu();
-                        }
-                        break;
-
-                    case 4:
-                        System.out.println("\nExit the program\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.startMenu();
-                        } else {
-                            System.exit(0);
-                        }
-                        break;
-
-                    default:
-                        System.err.println("\nUnrecognized option\n");
-                        System.out.print("Please enter your choice (1-4): ");
-                        option1();
-
+            case 1:
+                System.out.println("\nLaunch as Customer\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.startMenu();
+                } else {
+                    menu.loginMenu();
                 }
+                break;
 
-            } catch (InputMismatchException ex) {
+            case 2:
+                System.out.println("\nLaunch as Shop\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.startMenu();
+                } else {
+                    // shop login or just select shop in shopmenu - depends on time
+                    menu.shopMenu();
+                }
+                break;
 
-                checkOpt = false;
-                System.out.println("\nInvalid Input!\n");
+            case 3:
+                System.out.println("\nLaunch as Administrator\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.startMenu();
+                } else {
+                    // admin login
+                    menu.adminMenu();
+                }
+                break;
+
+            case 4:
+                System.out.println("\nExit the program\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.startMenu();
+                } else {
+                    System.out.println("Thank you for choosing us!");
+                    System.exit(0);
+                }
+                break;
+
+            default:
+                System.err.println("\nUnrecognized option\n");
                 System.out.print("Please enter your choice (1-4): ");
                 option1();
 
-            }
-
-        } while (checkOpt==false);
+        }
 
     }
 
@@ -270,50 +243,36 @@ class options {
 
         Scanner input2 = new Scanner(System.in);
         int opt = -1;
-        boolean checkOpt = false;
 
-        do {
-            try {
-                switch (input2.nextInt()) {
+        switch (input2.nextInt()) {
 
-                    case 1:
-                        System.out.println("\nRegister Account\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.loginMenu();
-                        } else {
-                            menu.registerStat = Register.custRegister();
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\nSign In\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.loginMenu();
-                        } else {
-                            menu.loggedInPhone = Login.custLogin();
-                            menu.userMenu();
-                        }
-                        break;
-
-                    default:
-                        System.err.println("\n\nUnrecognized option\n");
-                        System.out.print("Please enter your choice (1-2): ");
-                        option2();
-
+            case 1:
+                System.out.println("\nRegister Account\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.loginMenu();
+                } else {
+                    menu.registerStat = Register.custRegister();
                 }
+                break;
 
-            } catch (InputMismatchException ex) {
+            case 2:
+                System.out.println("\nSign In\n");
+                //opt = confirmChoice();
+                if (opt == 0) {
+                    menu.loginMenu();
+                } else {
+                    menu.loggedInPhone = Login.custLogin();
+                    //menu.userMenu();
+                }
+                break;
 
-                checkOpt = false;
-                System.out.println("\nInvalid Input!\n");
+            default:
+                System.err.println("\n\nUnrecognized option\n");
                 System.out.print("Please enter your choice (1-2): ");
                 option2();
 
-            }
-
-        } while (checkOpt==false);
+        }
 
     }
 
@@ -321,133 +280,100 @@ class options {
 
         Scanner input3 = new Scanner(System.in);
         int opt = -1;
-        boolean checkOpt = false;
 
-        do {
-            try {
-                switch (input3.nextInt()) {
+        switch (input3.nextInt()) {
 
-                    case 1:
-                        System.out.println("\nShop Check-In\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.userMenu();
-                        } else {
-                            menu.currentCheck_InLog = Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
-                            String[] logSplit = menu.currentCheck_InLog.split(" ");
-                            //menu.lastFlagTime = "" + logSplit[logSplit.length];
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\nView Visit History\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.userMenu();
-                        } else {
-                            ViewHistory.viewHistory(menu.loggedInPhone);
-                        }
-                        break;
-
-                    case 3:
-                        System.out.println("\nCheck Status\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.userMenu();
-                        } else {
-                            CheckStatus.checkStatus(menu.loggedInPhone);
-                        }
-                        break;
-
-                    case 4:
-                        System.out.println("\nSign Out\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.userMenu();
-                        } else {
-                            menu.loggedInPhone = "";
-                            menu.loginMenu();
-                        }
-                        break;
-
-                    default:
-                        System.err.println("\n\nUnrecognized option\n");
-                        System.out.print("Please enter your choice (1-4): ");
-                        option3();
-
+            case 1:
+                System.out.println("\nShop Check-In\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.userMenu();
+                } else {
+                    menu.currentCheck_InLog = Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
+                    String[] logSplit = menu.currentCheck_InLog.split(" ");
+                    //check_InFrame();
+                    //menu.lastFlagTime = "" + logSplit[logSplit.length];
                 }
+                break;
 
-            } catch (InputMismatchException ex) {
+            case 2:
+                System.out.println("\nView Visit History\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.userMenu();
+                } else {
+                    ViewHistory.viewHistory(menu.loggedInPhone);
+                }
+                break;
 
-                checkOpt = false;
-                System.out.println("\nInvalid Input!\n");
+            case 3:
+                System.out.println("\nCheck Status\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.userMenu();
+                } else {
+                    CheckStatus.checkStatus(menu.loggedInPhone);
+                }
+                break;
+
+            case 4:
+                System.out.println("\nSign Out\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.userMenu();
+                } else {
+                    menu.loggedInPhone = "";
+                    menu.loginMenu();
+                }
+                break;
+
+            default:
+                System.err.println("\n\nUnrecognized option\n");
                 System.out.print("Please enter your choice (1-4): ");
                 option3();
 
-            }
-
-        } while (checkOpt==false);
-
+        }
     }
 
     public static void option4() {
 
         Scanner input4 = new Scanner(System.in);
         int opt = -1;
-        boolean checkOpt = false;
+        switch (input4.nextInt()) {
 
-        do {
-            try {
-                switch (input4.nextInt()) {
-
-                    case 1:
-                        System.out.println("\nView Status\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.shopMenu();
-                        } else {
-                            // view shop status
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\nSign Out\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.shopMenu();
-                        } else {
-                            // return to menu.startmenu
-                        }
-                        break;
-
-                    default:
-                        System.err.println("\n\nUnrecognized option\n");
-                        System.out.print("Please enter your choice (1-2): ");
-                        option4();
-
+            case 1:
+                System.out.println("\nView Status\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.shopMenu();
+                } else {
+                    // view shop status
                 }
+                break;
 
-            } catch (InputMismatchException ex) {
+            case 2:
+                System.out.println("\nSign Out\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.shopMenu();
+                } else {
+                    // return to menu.startmenu
+                }
+                break;
 
-                checkOpt = false;
-                System.out.println("\nInvalid Input!\n");
+            default:
+                System.err.println("\n\nUnrecognized option\n");
                 System.out.print("Please enter your choice (1-2): ");
                 option4();
 
-            }
-
-        } while (checkOpt==false);
-
+        }
     }
 
     public static void option5() {
 
         Scanner input5 = new Scanner(System.in);
         int opt = -1;
-        boolean checkOpt = false;
 
-        do {
-            try {
                 switch (input5.nextInt()) {
 
                     case 1:
@@ -513,21 +439,11 @@ class options {
                     default:
                         System.err.println("\n\nUnrecognized option!\n");
                         System.out.print("Please enter your choice (1-6): ");
+
                         option5();
 
                 }
 
-            } catch (InputMismatchException ex) {
-
-                checkOpt = false;
-                System.out.println("\nInvalid Input!\n");
-                System.out.print("Please enter your choice (1-6): ");
-                option5();
-
             }
 
-        } while (checkOpt==false);
-
-    }
-
-}
+        }
