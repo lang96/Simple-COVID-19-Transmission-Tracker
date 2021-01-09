@@ -80,7 +80,7 @@ public class Admin {
             e.printStackTrace();
         }
 
-    } // incomplete
+    } // complete
 
     public static void viewCustomer() {
 
@@ -131,7 +131,7 @@ public class Admin {
             e.printStackTrace();
         }
 
-    }
+    } // complete
 
     public static void viewShop() {
 
@@ -183,7 +183,7 @@ public class Admin {
             e.printStackTrace();
         }
 
-    } // incomplete
+    } // complete
 
     public static int choice(ArrayList<Integer> flagIndex, int index) { // For flagCustomer()
 
@@ -398,9 +398,9 @@ public class Admin {
     // Test main module only
     public static void main(String[] args) throws java.text.ParseException {
 
-        //viewCustomer();
-        //viewMaster();
-        //viewShop();
+        viewCustomer();
+        viewMaster();
+        viewShop();
         //Customer.initializeCustomerList();
         //flagCustomer();
         //Customer.updateCustomerList();

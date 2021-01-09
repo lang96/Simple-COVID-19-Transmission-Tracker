@@ -480,7 +480,7 @@ public class Customer { // Arif
 
 }
 
-class Register { // Shu
+class Register { // Shu & edit name
 
     public static boolean custRegister() {
 
@@ -794,7 +794,7 @@ class Login { // Shu & Arif
 
     }
 
-} // buffer issue
+} // buffer issue & edit name
 
 class Check_In { // Shu
 
@@ -970,7 +970,7 @@ class Check_In { // Shu
 
     }
 
-} // buffer issue
+} // buffer issue & edit name
 
 class ViewHistory { // Arif
 
