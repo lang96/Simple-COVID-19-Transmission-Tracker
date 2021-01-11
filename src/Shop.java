@@ -7,12 +7,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Shop { // Shu
+// Member 2
+
+public class Shop {
 
     // private members
     private String shopName, shopPhone, shopStatus, shopManager;
@@ -21,6 +21,16 @@ public class Shop { // Shu
     public static ArrayList<Shop> ShopList = new ArrayList<>();
 
     // constructor
+
+    /**
+     * A Shop representing multiple strings (shopName,shopPhone,shopStatus,shopManager) where all of them are string.
+     *
+     * @param shopName    the shop name of Shop
+     * @param shopPhone   the shop phone number of Shop
+     * @param shopStatus  the shop status of Shop
+     * @param shopManager the shop manager name of Shop
+     *
+     */
     public Shop(String shopName, String shopPhone, String shopStatus, String shopManager) {
 
         this.shopName = shopName;
@@ -33,26 +43,53 @@ public class Shop { // Shu
     // methods
 
     // getters
-    public String getShopName() { return this.shopName; }
 
+    /**
+     * Returns the Shop's Name
+     * @return (shopName)
+     */
+    public String getShopName() {
+        return this.shopName;
+    }
+    /**
+     * Returns the Shop's Phone Number
+     * @return (shopPhone)
+     */
     public String getShopPhone() {
         return this.shopPhone;
     }
-
+    /**
+     * Returns the Shop's Status
+     * @return (shopStatus)
+     */
     public String getShopStatus() {
         return this.shopStatus;
     }
-
+    /**
+     * Returns the Shop's Manager Name
+     * @return (shopManager)
+     */
     public String getShopManager() {
         return this.shopManager;
     }
 
     // setters
+
+    /**
+     * Set Status of a Shop
+     * @param shopStatus the status of a Shop
+     */
     public void setStatus(String shopStatus) {
         this.shopStatus = shopStatus;
     }
 
     // list and JSON methods
+
+    /**
+     * Returns the Shop's attributes in a predetermined format by passing an index as a parameter
+     * @param shopIndex the Shop instance index
+     * @return the Shop attributes
+     */
     public String toString(int shopIndex) {
 
         return String.format("%-2s %-15s  %-15s  \n", shopIndex+1, shopName, shopManager);
@@ -60,6 +97,11 @@ public class Shop { // Shu
     }
 
     // program feature methods
+
+    /**
+     * Selecting Shop for shop manager to sign in by choosing from index
+     * @return index of selected Shop
+     */
     public static int selectShop() {
 
         int opt = 0;
@@ -88,6 +130,10 @@ public class Shop { // Shu
 
     }
 
+    /**
+     * viewShopStatus outputs the Shop's status
+     * @param shop the shop name of Shop
+     */
     public static void viewShopStatus(String shop) {
 
         String status = "";
@@ -119,12 +165,15 @@ public class Shop { // Shu
     }
 
     // accompanying methods
+
+    /**
+     * To initialize ShopList from JSON File
+     */
     public static void initializeShopList() { // At the start of program, the CustomerList is initialized from JSON file
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject shopData = (JSONObject) obj;
@@ -155,12 +204,14 @@ public class Shop { // Shu
 
     }
 
+    /**
+     * Updating ShopList to JSON file
+     */
     public static void updateShopList() {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject shopData = (JSONObject) obj;
@@ -194,8 +245,7 @@ public class Shop { // Shu
             shopData.put("status",shopStatusArr);
             shopData.put("manager",shopManagerArr);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\shopData.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
                 fileWrite.write(shopData.toJSONString());
                 fileWrite.flush();
@@ -215,9 +265,3 @@ public class Shop { // Shu
     }
 
 }
-
-
-
-
-
-

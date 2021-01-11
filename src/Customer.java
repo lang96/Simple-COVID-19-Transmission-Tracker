@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -17,8 +18,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Customer { // Arif
+public class Customer { // Member 1 & 2
 
     // private members
     private String custFName, custLName, custPhone, custPass, custStatus;
@@ -97,8 +99,7 @@ public class Customer { // Arif
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -108,8 +109,7 @@ public class Customer { // Arif
             JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
             JSONArray statusArr = (JSONArray)  customerData.get("status");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\loginData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
                 JSONObject login = (JSONObject) obj2;
@@ -152,23 +152,25 @@ public class Customer { // Arif
             }
 
         } catch (FileNotFoundException f) {
-                f.printStackTrace();
+            f.printStackTrace();
         } catch (IOException f) {
-                f.printStackTrace();
+            f.printStackTrace();
         } catch (ParseException f) {
-                f.printStackTrace();
+            f.printStackTrace();
         }
+
 
     }
 
     public static void appendToCustomerList(String fName, String lName, String phoneNum, String pass) {
 
+        // add Customer() object to CustomerList
+
         String status = Customer.defStatus;
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -193,8 +195,7 @@ public class Customer { // Arif
             customerData.put("status", statusArr);
 
             //Write JSON file
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\customerData.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 fileWrite.write(customerData.toJSONString());
                 fileWrite.flush();
@@ -211,8 +212,7 @@ public class Customer { // Arif
             f.printStackTrace();
         }
 
-        try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\loginData.json")) {
+        try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
             Object obj2 = jsonParser.parse(reader2);
 
@@ -245,8 +245,7 @@ public class Customer { // Arif
             login.put("customer",loginData);
 
             //Write JSON file
-            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\loginData.json")) {
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 fileWrite2.write(login.toJSONString());
                 fileWrite2.flush();
@@ -267,10 +266,11 @@ public class Customer { // Arif
 
     public static void updateCustomerList() {
 
+        // updates CustomerList after check-in to update details in JSON files
+
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -280,8 +280,7 @@ public class Customer { // Arif
             customerData.remove("phoneNum");
             customerData.remove("status");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\loginData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
 
@@ -316,8 +315,7 @@ public class Customer { // Arif
                 login.put("admin", adminData);
                 login.put("customer", customerLogin);
 
-                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                        "\\res\\data\\loginData.json")) {
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                     fileWrite.write(login.toJSONString());
                     fileWrite.flush();
@@ -358,8 +356,7 @@ public class Customer { // Arif
             customerData.put("phoneNum",phoneNumArr);
             customerData.put("status",statusArr);
 
-            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\customerData.json")) {
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 fileWrite2.write(customerData.toJSONString());
                 fileWrite2.flush();
@@ -378,7 +375,7 @@ public class Customer { // Arif
 
     }
 
-    public static ArrayList<Integer>displayCustomerListToFlag()  {
+    public static ArrayList<Integer>displayCustomerListToFlag()  { // For flagCustomer() in Admin
 
         System.out.printf("\n%-2s %-15s  %-11s  %-6s \n\n", "No", "Name", "Phone", "Status");
 
@@ -409,7 +406,7 @@ public class Customer { // Arif
 }
 
 // program feature classes with methods
-class Register { // Shu & edit name
+class Register { // Member 2
 
     public static void custRegister() {
         registerFrame frame = new registerFrame();
@@ -549,9 +546,9 @@ class Register { // Shu & edit name
 
     }
 
-} // complete
+}
 
-class Login { // Shu & Arif
+class Login { // Member 1 & 2
 
     public static void custLogin() {
         loginFrame frame = new loginFrame();
@@ -602,12 +599,12 @@ class Login { // Shu & Arif
             reset.addActionListener(this);
             e.add(reset);
 
-            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\show.png")); // add dir
+            show=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
             show.setBounds(220,120,30,20);
             show.addActionListener(this);
             e.add(show);
 
-            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\hide.png"));
+            hide=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\hide.png"));
             hide.setBounds(265,120,30,20);
             hide.addActionListener(this);
             e.add(hide);
@@ -632,8 +629,7 @@ class Login { // Shu & Arif
 
             // Parsing the contents of the JSON file
 
-            try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\loginData.json")) {
+            try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj = jsonParser.parse(reader);
                 JSONObject loginData = (JSONObject) obj;
@@ -656,8 +652,7 @@ class Login { // Shu & Arif
 
                 }
 
-                try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                        "\\res\\data\\customerData.json")) {
+                try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                     Object obj2 = jsonParser.parse(reader2);
 
@@ -732,51 +727,9 @@ class Login { // Shu & Arif
 
     }
 
-} // complete
+}
 
-class Check_In { // Shu
-
-    public static String getStatus(String loginPhone) {
-
-        String checkPhone = "";
-        String status = "";
-
-        for(int i=0; i < Customer.CustomerList.size(); i++) {
-
-            checkPhone = Customer.CustomerList.get(i).getPhoneNum();
-            if (checkPhone.equals(loginPhone)) {
-
-                status = Customer.CustomerList.get(i).getStatus();
-
-            }
-
-        }
-
-        return status;
-
-    }
-
-    public static boolean checkLastFlag() {
-
-        boolean flag = false;
-        long diff = 0;
-        String lastFlagTime = "";
-
-        lastFlagTime = menu.lastFlagTime;
-
-        String date = check_InFrame.check_InDate;
-        String time = check_InFrame.check_InTime;
-        String fullDateTime = date + " " + time;
-
-        diff = Admin.findDifference(fullDateTime, lastFlagTime);
-
-        if (diff >= 0 && diff <= 60) {
-            flag = true;
-        }
-
-        return flag;
-
-    }
+class Check_In { // Member 1 & 2
 
     public static void custCheck_In(String loginPhone) {
 
@@ -789,8 +742,7 @@ class Check_In { // Shu
         public static String check_InShop;
         public static String check_InDate;
         public static String check_InTime;
-        public static String lastFlag;
-        public static boolean lastFlagStat;
+        public static ArrayList<String> lastCaseArr;
         public static String loginPhone;
         JLabel Title;
         JButton Tesco, Giant, Econsave, Jaya;
@@ -810,22 +762,22 @@ class Check_In { // Shu
             Title.setBounds(80, 30, 300, 20);
             e.add(Title);
 
-            Tesco = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\tesco.jpg"));
+            Tesco = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\tesco.jpg"));
             Tesco.setBounds(50, 80, 140, 35);
             Tesco.addActionListener(this);
             e.add(Tesco);
 
-            Giant = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\Giant.jpg"));
+            Giant = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\Giant.jpg"));
             Giant.setBounds(200, 80, 140, 35);
             Giant.addActionListener(this);
             e.add(Giant);
 
-            Econsave = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\Econsave.png"));
+            Econsave = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\Econsave.png"));
             Econsave.setBounds(50, 150, 140, 35);
             Econsave.addActionListener(this);
             e.add(Econsave);
 
-            Jaya = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\jaya.jpg"));
+            Jaya = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\jaya.jpg"));
             Jaya.setBounds(200, 150, 140, 35);
             Jaya.addActionListener(this);
             e.add(Jaya);
@@ -848,42 +800,21 @@ class Check_In { // Shu
             check_InDate = "" + parts[0];
             check_InTime = "" + parts[1];
             loginPhone = "" + menu.loggedInPhone;
+            String status = "";
+            String shopStatus = "";
 
             if (e.getSource() == Tesco) {
                 JOptionPane.showMessageDialog(Tesco,
                         "Checked-In Tesco at :" + "\n" + formattedDate);
                 check_InShop = "" + "Tesco";
 
-                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
-                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
-
-                String status = getStatus(loginPhone);
-                if(Customer.check_InTotal == 0) {
-
-                    if(status.equals("Case")) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                } else {
-
-                    lastFlagStat = checkLastFlag();
-                    if(lastFlagStat) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                }
-
-                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
-                menu.lastFlagTime = lastFlag;
+                Admin.appendToMasterHistory(loginPhone, check_InDate, check_InTime, check_InShop);
+                autoFlag.autoFlag(loginPhone, check_InDate, check_InTime, check_InShop);
 
                 dispose();
                 int opt = options.afterChoice();
 
-                if(opt == 9) {
+                if (opt == 9) {
                     Customer.check_InTotal++;
                     menu.userMenu();
                 } else {
@@ -893,41 +824,19 @@ class Check_In { // Shu
                 }
 
             }
+
             else if (e.getSource() == Giant) {
                 JOptionPane.showMessageDialog(Giant,
                         "Checked-In Giant at :" + "\n" + formattedDate);
                 check_InShop = "" + "Giant";
 
-                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
-                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
-
-                String status = getStatus(loginPhone);
-                if(Customer.check_InTotal == 0) {
-
-                    if(status.equals("Case")) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                } else {
-
-                    lastFlagStat = checkLastFlag();
-                    if(lastFlagStat) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                }
-
-                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
-                menu.lastFlagTime = lastFlag;
+                Admin.appendToMasterHistory(loginPhone, check_InDate, check_InTime, check_InShop);
+                autoFlag.autoFlag(loginPhone, check_InDate, check_InTime, check_InShop);
 
                 dispose();
                 int opt = options.afterChoice();
 
-                if(opt == 9) {
+                if (opt == 9) {
                     Customer.check_InTotal++;
                     menu.userMenu();
                 } else {
@@ -936,42 +845,18 @@ class Check_In { // Shu
                     menu.startMenu();
                 }
 
-            }
-            else if (e.getSource() == Econsave) {
+            } else if (e.getSource() == Econsave) {
                 JOptionPane.showMessageDialog(Econsave,
                         "Checked-In Econsave at :" + "\n" + formattedDate);
                 check_InShop = "" + "Econsave";
 
-                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
-                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
-
-                String status = getStatus(loginPhone);
-                if(Customer.check_InTotal == 0) {
-
-                    if(status.equals("Case")) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                } else {
-
-                    lastFlagStat = checkLastFlag();
-                    if(lastFlagStat) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                }
-
-                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
-                menu.lastFlagTime = lastFlag;
+                Admin.appendToMasterHistory(loginPhone, check_InDate, check_InTime, check_InShop);
+                autoFlag.autoFlag(loginPhone, check_InDate, check_InTime, check_InShop);
 
                 dispose();
                 int opt = options.afterChoice();
 
-                if(opt == 9) {
+                if (opt == 9) {
                     Customer.check_InTotal++;
                     menu.userMenu();
                 } else {
@@ -980,42 +865,18 @@ class Check_In { // Shu
                     menu.startMenu();
                 }
 
-            }
-            else if (e.getSource() == Jaya) {
+            } else if (e.getSource() == Jaya) {
                 JOptionPane.showMessageDialog(Jaya,
                         "Checked-In Jaya Grocer at :" + "\n" + formattedDate);
                 check_InShop = "" + "Jaya Grocer";
 
-                menu.currentCheck_InLog = "" + check_InShop + check_InDate + check_InTime + loginPhone;
-                Admin.appendToMasterHistory(loginPhone,check_InDate, check_InTime,check_InShop);
-
-                String status = getStatus(loginPhone);
-                if(Customer.check_InTotal == 0) {
-
-                    if(status.equals("Case")) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                } else {
-
-                    lastFlagStat = checkLastFlag();
-                    if(lastFlagStat) {
-
-                        lastFlag = Admin.flagShop(check_InShop, check_InDate, check_InTime);
-
-                    }
-
-                }
-
-                menu.currentCheck_InLog = "" + check_InFrame.check_InShop + check_InFrame.check_InDate + check_InFrame.check_InTime + loginPhone;
-                menu.lastFlagTime = lastFlag;
+                Admin.appendToMasterHistory(loginPhone, check_InDate, check_InTime, check_InShop);
+                autoFlag.autoFlag(loginPhone, check_InDate, check_InTime, check_InShop);
 
                 dispose();
                 int opt = options.afterChoice();
 
-                if(opt == 9) {
+                if (opt == 9) {
                     Customer.check_InTotal++;
                     menu.userMenu();
                 } else {
@@ -1030,9 +891,9 @@ class Check_In { // Shu
 
     }
 
-} // complete
+}
 
-class ViewHistory { // Arif
+class ViewHistory { // Member 1
 
     public static String getName(String loginPhone) {
 
@@ -1064,8 +925,7 @@ class ViewHistory { // Arif
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerVisit = (JSONObject) obj;
@@ -1115,9 +975,9 @@ class ViewHistory { // Arif
 
     }
 
-} // complete
+}
 
-class CheckStatus { // Arif
+class CheckStatus { // Member 1
 
     public static String getStatus_and_Name(String loginPhone) {
 
@@ -1161,4 +1021,532 @@ class CheckStatus { // Arif
 
     }
 
-} // complete
+}
+
+class Case { // Member 1
+
+    // private members
+    private String date, time, shop;
+
+    // public members
+    public static ArrayList<Case> CaseList = new ArrayList<>();
+
+    // constructor
+    Case(String date, String time, String shop) {
+
+        this.date = date;
+        this.time = time;
+        this.shop = shop;
+
+    }
+
+    // methods
+
+    // getters
+
+    public String getDate() { return this.date;}
+    public String getTime() { return this.time;}
+    public String getShop() { return this.shop;}
+
+    public static void initializeCaseVisit() { // Whenever required, the CaseList is initialized from JSON file
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject logs = (JSONObject) obj;
+
+            Object caseLogs = logs.get("caseLog");
+            JSONObject caseLog = (JSONObject) caseLogs;
+
+            JSONArray caseDateArr = (JSONArray) caseLog.get("caseDateLog");
+            JSONArray caseTimeArr = (JSONArray) caseLog.get("caseTimeLog");
+            JSONArray caseShopArr = (JSONArray) caseLog.get("caseShopLog");
+
+            for(int i = 0; i < caseDateArr.size(); i++) {
+
+                String appendDate = "" + caseDateArr.get(i);
+                String appendTime = "" + caseTimeArr.get(i);
+                String appendShop = "" + caseShopArr.get(i);
+
+                CaseList.add(new Case(appendDate, appendTime, appendShop));
+
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
+}
+
+class autoFlag { // Member 1
+
+    public static String getStatus(String loginPhone) {
+
+        // get status of customer who checked in
+
+        String checkPhone = "";
+        String status = "";
+
+        for(int i=0; i < Customer.CustomerList.size(); i++) {
+
+            checkPhone = Customer.CustomerList.get(i).getPhoneNum();
+            if (checkPhone.equals(loginPhone)) {
+
+                status = Customer.CustomerList.get(i).getStatus();
+
+            }
+
+        }
+
+        return status;
+
+    }
+
+    public static long findDifference(String beginDate, String endDate) {
+
+        // finds the difference in time between two dateTimes
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        long timeDifference;
+        long minutesDifference = 0;
+
+        try {
+
+            Date d1 = sdf.parse(beginDate);
+            Date d2 = sdf.parse(endDate);
+
+            int beforeAfter = d1.compareTo(d2);
+
+            if (beforeAfter == -1) {
+                timeDifference = d2.getTime() - d1.getTime();
+            } else if (beforeAfter == 1) {
+                timeDifference = d1.getTime() - d2.getTime();
+            } else {
+                timeDifference = 0;
+            }
+
+            minutesDifference = (timeDifference / (1000 * 60)) % 60;
+
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+
+        return minutesDifference;
+
+    }
+
+    public static String checkIfCase(String loginPhone, String date, String time, String shop) { // right after check-in
+
+        // checks if customer who checked in is of a "Case" status
+
+        String status = getStatus(loginPhone);
+
+        if (status.equals("Case")) {
+
+            addLastCaseVisit(date, time, shop);
+
+        }
+
+        return status;
+
+    }
+
+    public static String checkIfShopCase(String shopName) { // for normal customer check-in
+
+        // checks if shop which customer checked into is of a "Case" status
+
+        String checkName = "";
+        String shopStatus = "";
+
+        for(int i=0; i < Shop.ShopList.size(); i++) {
+
+            checkName = Shop.ShopList.get(i).getShopName();
+            if (checkName.equals(shopName)) {
+
+                shopStatus = Shop.ShopList.get(i).getShopStatus();
+
+            }
+
+        }
+
+        return shopStatus;
+
+    }
+
+    public static void addLastCaseVisit(String date, String time, String shop) {
+
+        // logs any check-in of a customer of a "Case" status
+
+        Check_In.check_InFrame.lastCaseArr = new ArrayList<>();
+        String lastCaseLog = "" + date + " " + time + " " + shop;
+        Check_In.check_InFrame.lastCaseArr.add(lastCaseLog);
+
+        String[] caseSplit = lastCaseLog.split(" ");
+        String caseDate = caseSplit[0];
+        String caseTime = caseSplit[1];
+        String caseShop = caseSplit[2];
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            JSONObject caseLog = new JSONObject();
+            JSONArray caseDateArr = new JSONArray();
+            JSONArray caseTimeArr = new JSONArray();
+            JSONArray caseShopArr = new JSONArray();
+
+            caseDateArr.add(caseDate);
+            caseTimeArr.add(caseTime);
+            caseShopArr.add(caseShop);
+
+            caseLog.put("caseDateLog", caseDateArr);
+            caseLog.put("caseTimeLog", caseTimeArr);
+            caseLog.put("caseShopLog", caseShopArr);
+
+            visit.put("caseLog", caseLog);
+
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+
+                fileWrite.write(visit.toJSONString());
+                fileWrite.flush();
+
+            } catch (IOException ef) {
+                ef.printStackTrace();
+            }
+
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException f) {
+            f.printStackTrace();
+        } catch (ParseException f) {
+            f.printStackTrace();
+        }
+
+    }
+
+    public static boolean checkLastFlag(String shop, String date, String time) {
+
+        // checks if there were any visit by "Case" customer logged in the JSON file
+
+        Check_In.check_InFrame.lastCaseArr = new ArrayList<>();
+        boolean flag = false;
+        long diff = 0;
+        String lastFlagTime = "";
+        String lastFlagShop = "";
+
+        for(int i = 0; i < Case.CaseList.size(); i++) {
+
+            String dateGet = Case.CaseList.get(i).getDate();
+            String timeGet = Case.CaseList.get(i).getTime();
+            String shopGet = Case.CaseList.get(i).getShop();
+            String lastCaseLog = "" + dateGet + " " + timeGet + " " + shopGet;
+            Check_In.check_InFrame.lastCaseArr.add(lastCaseLog);
+
+        }
+
+        if (!Check_In.check_InFrame.lastCaseArr.isEmpty()) {
+
+            for(int i = 0; i < Check_In.check_InFrame.lastCaseArr.size(); i++) {
+
+                String lastCase = Check_In.check_InFrame.lastCaseArr.get(i);
+                String[] splitString = lastCase.split(" ");
+                lastFlagTime = "" + splitString[0];
+                lastFlagShop = "" + splitString[1];
+
+                if(shop.equals(lastFlagShop)) {
+
+                    String fullDateTime = date + " " + time;
+
+                    diff = findDifference(fullDateTime, lastFlagTime);
+
+                    if (diff >= 0 && diff <= 60) {
+                        flag = true;
+                        break;
+                    }
+
+                }
+
+            }
+
+        }
+            return flag;
+    }
+
+    public static void autoFlag(String phone, String date, String time, String shop) {
+        // all parameters are attribute belonging to person who currently checked in
+
+        // automatically flags all close contacts when a customer checks in according to conditionals
+
+        String checkShopName = "";
+        String customerStat = "";
+        String shopStat = "";
+        boolean flag = false;
+
+        customerStat = checkIfCase(phone, date, time, shop);
+        shopStat = checkIfShopCase(shop);
+
+        if (customerStat.equals("Case")) { // for case check-in
+
+            if (shopStat.equals("Case")) {
+
+                flagCloseContacts(phone, date, time, shop); // flag close contacts without flagging self
+
+            } else { // since shop is normal, set status to case
+
+                for(int i=0; i < Shop.ShopList.size(); i++) {
+
+                    checkShopName = Shop.ShopList.get(i).getShopName();
+                    if (checkShopName.equals(shop)) {
+
+                        Shop.ShopList.get(i).setStatus("Case");
+
+                    }
+
+                }
+
+                // flag close contacts without flagging self
+                flagCloseContacts(phone, date, time, shop);
+            }
+
+        } else { // for normal check-in
+
+            if (shopStat.equals("Case")) {
+
+                flag = checkLastFlag(shop, date, time); // check last flag
+                if(flag) {
+
+                    String checkPhone = "";
+
+                    for(int i=0; i < Customer.CustomerList.size(); i++) {
+
+                        checkPhone = Customer.CustomerList.get(i).getPhoneNum();
+                        if (checkPhone.equals(phone)) {
+
+                            Customer.CustomerList.get(i).setStatus("Close");
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        Customer.updateCustomerList();
+        Shop.updateShopList();
+
+    }
+
+    public static void autoFlagFromCustomer(String phone, String date, String time, ArrayList<String> shop) {
+        // all parameters are attribute belonging to person who currently checked in
+
+        // automatically flags all close contacts when a admin flags a customer according to conditionals
+
+        String currentShop = "";
+        String checkShopName = "";
+        String customerStat = "";
+        String shopStat = "";
+        boolean flag = false;
+
+        if(shop.isEmpty()) {
+            return;
+        } else {
+
+            for(int i = 0; i < shop.size(); i++) {
+
+                currentShop = "" + shop.get(i);
+
+                customerStat = checkIfCase(phone, date, time, currentShop);
+                shopStat = checkIfShopCase(currentShop);
+
+                if (customerStat.equals("Case")) { // for case check-in
+
+                    if (shopStat.equals("Case")) {
+
+                        flagCloseContacts(phone, date, time, currentShop); // flag close contacts without flagging self
+
+                    } else { // since shop is normal, set status to case
+
+                        for(int j=0; j < Shop.ShopList.size(); j++) {
+
+                            checkShopName = Shop.ShopList.get(j).getShopName();
+                            if (checkShopName.equals(currentShop)) {
+
+                                Shop.ShopList.get(j).setStatus("Case");
+
+                            }
+
+                        }
+
+                        // flag close contacts without flagging self
+                        flagCloseContacts(phone, date, time, currentShop);
+                    }
+
+                } else { // for normal check-in
+
+                    if (shopStat.equals("Case")) {
+
+                        flag = checkLastFlag(currentShop, date, time); // check last flag
+                        if(flag) {
+
+                            String checkPhone = "";
+
+                            for(int k=0; k < Customer.CustomerList.size(); k++) {
+
+                                checkPhone = Customer.CustomerList.get(k).getPhoneNum();
+                                if (checkPhone.equals(phone)) {
+
+                                    Customer.CustomerList.get(k).setStatus("Close");
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                Customer.updateCustomerList();
+                Shop.updateShopList();
+
+            }
+
+        }
+
+    } // works
+
+    public static void flagCloseContacts(String phone, String date, String time, String shop) {
+
+        // This method automatically flags a shop as a zone of CoViD-19 positive cases, thus automatically -
+        // - flagging anyone who are considered close contacts (within the timeRange of the case check-in) as -
+        // - CoViD-19 close contacts.
+
+        // find customers within flagged customer timestamp range
+
+        String fullDateTime = date + " " + time;
+        String splitDate = "";
+        String splitTime = "";
+        ArrayList<String> dateTimeIndex = new ArrayList<>();
+        ArrayList<String> flagTimeIndex = new ArrayList<>();
+        ArrayList<String> flaggedCustomers = new ArrayList<>();
+        String[] splitDateTime;
+        long minsDiff = 0;
+
+        JSONParser jsonParser = new JSONParser();
+
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+
+            Object obj = jsonParser.parse(reader);
+            JSONObject visit = (JSONObject) obj;
+
+            JSONArray dateArr = (JSONArray) visit.get("date");
+            JSONArray timeArr = (JSONArray) visit.get("time");
+            JSONArray customerArr = (JSONArray) visit.get("customerName");
+            JSONArray shopArr = (JSONArray) visit.get("shop");
+
+            String checkDateTime = "";
+
+            for (int i = 0;i < shopArr.size();i++) {
+
+                if (shop.equals(shopArr.get(i))) {
+
+                    for (int j = 0; j < dateArr.size(); j++) {
+
+                        checkDateTime = dateArr.get(i) + " " + timeArr.get(i);
+                        if (fullDateTime.equals(checkDateTime))
+                            continue;
+                        dateTimeIndex.add(checkDateTime);
+
+                    }
+
+                } else
+                    continue;
+
+            }
+
+            if(dateTimeIndex.isEmpty()) { // no check-in within the particular shop
+                return;
+            } else {
+
+                for (int i = 0;i < dateTimeIndex.size();i++) {
+
+                    minsDiff = findDifference(fullDateTime, dateTimeIndex.get(i));
+                    if (minsDiff >= 0 && minsDiff <= 60) {
+                        flagTimeIndex.add(dateTimeIndex.get(i));
+                    } else
+                        continue;
+
+                }
+
+            }
+
+            if(flagTimeIndex.isEmpty()) { // no check-in within close contact time range
+                return;
+            } else {
+
+                for (int i = 0;i < flagTimeIndex.size();i++) {
+
+                    splitDateTime = flagTimeIndex.get(i).split(" ");
+                    splitDate = "" + splitDateTime[0];
+                    splitTime = "" + splitDateTime[1];
+
+                    for (int j = 0;j < dateArr.size();j++) {
+
+                        if (splitDate.equals(dateArr.get(j)) && splitTime.equals(timeArr.get(j))) {
+
+                            flaggedCustomers.add(String.valueOf(customerArr.get(j)));
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            for (int i = 0; i < flaggedCustomers.size(); i++) {
+
+                for (int j = 0; j < Customer.CustomerList.size(); j++) {
+
+                    if(flaggedCustomers.get(i).equals(Customer.CustomerList.get(j).getFName())) {
+
+                        if (Customer.CustomerList.get(j).getPhoneNum().equals(phone)) {
+
+                            Customer.CustomerList.get(j).setStatus("Case");
+                            continue;
+
+                        }
+                        Customer.CustomerList.get(j).setStatus("Close");
+
+                    }
+
+                }
+
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+}

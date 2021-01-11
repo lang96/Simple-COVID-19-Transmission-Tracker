@@ -22,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 
+// Member 1
+
 public class Admin {
 
     // methods
@@ -33,7 +35,6 @@ public class Admin {
 
         List<Visit.DateItem> sortedHistory;
 
-        Visit.initializeVisitList();
         sortedHistory = Visit.sortVisitHistory();
 
         String sortedDate;
@@ -65,8 +66,16 @@ public class Admin {
 
         }
 
+        int opt = options.afterChoice();
 
-    } // complete
+        if(opt == 9) {
+            menu.adminMenu();
+        } else {
+            menu.startMenu();
+        }
+
+
+    }
 
     public static void viewCustomer() {
 
@@ -81,8 +90,7 @@ public class Admin {
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -125,7 +133,7 @@ public class Admin {
             e.printStackTrace();
         }
 
-    } // complete
+    }
 
     public static void viewShop() {
 
@@ -139,8 +147,7 @@ public class Admin {
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -154,7 +161,7 @@ public class Admin {
             // Table output
 
             System.out.printf("\n%-2s ", "No");
-            System.out.printf("%-10s  ", "Name");
+            System.out.printf("%-15s ", "Name");
             System.out.printf("%-11s  ", "Phone");
             System.out.printf("%-15s  ", "Manager");
             System.out.printf("%-6s \n\n", "Status");
@@ -162,7 +169,7 @@ public class Admin {
             for (int i = 0;i < phoneNum.size();i++) {
 
                 System.out.printf("%-2s ", (i+1));
-                System.out.printf("%-10s  ", name.get(i));
+                System.out.printf("%-15s ", name.get(i));
                 System.out.printf("%-11s  ", phoneNum.get(i));
                 System.out.printf("%-15s  ", manager.get(i));
                 System.out.printf("%-6s \n\n", status.get(i));
@@ -185,157 +192,79 @@ public class Admin {
             e.printStackTrace();
         }
 
-    } // complete
+    }
 
     public static void flagCustomer() {
 
         // This function allows admin to flag a customer as a positive case of CoViD-19.
         // With this function deployed, the flagShop() function automatically deploys as well.
 
+        // timestamp for close contact flagging
+        LocalDateTime timeVar = LocalDateTime.now();
+        DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = timeVar.format(dateVar);
+
+        String[] parts = formattedDate.split(" ");
+        String flagDate = "" + parts[0];
+        String flagTime = "" + parts[1];
+
+        ArrayList<String> shopList = new ArrayList<>();
+        String shop = "";
+        String phone = "";
+
         // access customer and retrieve index
         int flagIndex = 0;
         ArrayList<Integer> flaggable = Customer.displayCustomerListToFlag();
-        flagIndex = choice(flaggable, flagIndex);
 
-        // flag customer
-        String newStat = "Case";
-        Customer.CustomerList.get(flagIndex).setStatus(newStat);
+        if(flaggable.isEmpty()) {
 
-        Customer.updateCustomerList();
+            System.out.println("\nThere are no customers available to flag since the customers are all either marked as Case or Close.\n");
 
-        //LocalDateTime timeVar = LocalDateTime.now();
-        //DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        //String formattedDate = timeVar.format(dateVar);
+            int opt = options.afterChoice();
 
-        int opt = options.afterChoice();
+            if(opt == 9) {
+                menu.adminMenu();
+            } else {
+                menu.startMenu();
+            }
 
-        if(opt == 9) {
-            menu.adminMenu();
         } else {
-            menu.startMenu();
-        }
 
-        // above 1 am and below 11 pm
+            flagIndex = choice(flaggable, flagIndex);
 
+            // retrieve flagged customer's phone
+            phone = "" + Customer.CustomerList.get(flagIndex).getPhoneNum();
 
-        // between 11 pm and 1 am
+            // retrieve shops visited by customer
+            Visit.initializeVisitList();
 
+            for(int i = 0; i < Visit.VisitList.size(); i++) {
 
-    } // fix
-
-    public static String flagShop(String shop, String date, String time) {
-
-        // This function is an extension of the function flagCustomer().
-        // This function allows admin to flag a shop as a zone of CoViD-19 positive cases, thus automatically -
-        // - flagging anyone who are considered close contacts (within the regulations set in customerData class) as -
-        // - CoViD-19 positive cases.
-
-        // find customers within flagged customer timestamp range
-
-        String fullDateTime = date + " " + time;
-        String splitDate = "";
-        String splitTime = "";
-        ArrayList<String> dateTimeIndex = new ArrayList<>();
-        ArrayList<String> flagTimeIndex = new ArrayList<>();
-        ArrayList<String> flaggedCustomers = new ArrayList<>();
-        String[] splitDateTime;
-        long minsDiff = 0;
-
-
-        JSONParser jsonParser = new JSONParser();
-
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
-
-            Object obj = jsonParser.parse(reader);
-            JSONObject visit = (JSONObject) obj;
-
-            JSONArray dateArr = (JSONArray) visit.get("date");
-            JSONArray timeArr = (JSONArray) visit.get("time");
-            JSONArray customerArr = (JSONArray) visit.get("customerName");
-            JSONArray shopArr = (JSONArray) visit.get("shop");
-
-            String checkDateTime = "";
-
-            for (int i = 0;i < dateArr.size();i++) {
-
-                checkDateTime = dateArr.get(i) + " " + timeArr.get(i);
-                dateTimeIndex.add(checkDateTime);
-
-            }
-
-            for (int i = 0;i < dateTimeIndex.size();i++) {
-
-                minsDiff = findDifference(fullDateTime, dateTimeIndex.get(i));
-                if (minsDiff >= 0 && minsDiff <= 60) {
-                    if (fullDateTime.equals(dateTimeIndex.get(i)))
-                        continue;
-                    flagTimeIndex.add(dateTimeIndex.get(i));
+                if(Customer.CustomerList.get(flagIndex).getFName().equals(Visit.VisitList.get(i).getVisitCustomer())) {
+                    shop = "" + Visit.VisitList.get(i).getVisitShop();
+                    shopList.add(shop);
                 }
 
             }
 
-            // get all close contact customers
+            // flag customer
+            String newStat = "Case";
+            Customer.CustomerList.get(flagIndex).setStatus(newStat);
 
-            for (int i = 0;i < flagTimeIndex.size();i++) {
+            // flag close contacts
+            autoFlag.autoFlagFromCustomer(phone, flagDate, flagTime,shopList);
 
-                splitDateTime = flagTimeIndex.get(i).split(" ");
-                splitDate = "" + splitDateTime[0];
-                splitTime = "" + splitDateTime[1];
+            int opt = options.afterChoice();
 
-                for (int j = 0;j < dateArr.size();j++) {
-
-                    if (splitDate.equals(dateArr.get(j)) && splitTime.equals(timeArr.get(j))) {
-
-                        flaggedCustomers.add(String.valueOf(customerArr.get(j)));
-
-                    }
-
-                }
-
-            }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        // flag close contacts
-        for (int i = 0; i < flaggedCustomers.size(); i++) {
-
-            for (int j = 0; j < Customer.CustomerList.size(); j++) {
-
-                if(flaggedCustomers.get(i).equals(Customer.CustomerList.get(j).getFName())) {
-
-                    Customer.CustomerList.get(j).setStatus("Close");
-
-                }
-
+            if(opt == 9) {
+                menu.adminMenu();
+            } else {
+                menu.startMenu();
             }
 
         }
 
-        Customer.updateCustomerList();
-
-        // flag shop as case
-        for (int k = 0; k < Shop.ShopList.size(); k++) {
-
-            if(shop.equals(Shop.ShopList.get(k).getShopName())) {
-
-                Shop.ShopList.get(k).setStatus("Case");
-
-            }
-
-        }
-
-        Shop.updateShopList();
-
-        return fullDateTime;
-
-    } // incomplete & fix
+    }
 
     public static void add30Visits() {
 
@@ -349,15 +278,15 @@ public class Admin {
 
         }
 
-//        int opt = options.afterChoice();
-//
-//        if(opt == 9) {
-//            menu.adminMenu();
-//        } else {
-//            menu.startMenu();
-//        }
+        int opt = options.afterChoice();
 
-    } // complete
+        if(opt == 9) {
+            menu.adminMenu();
+        } else {
+            menu.startMenu();
+        }
+
+    }
 
     // accompanying methods
     public static void addVisit() {
@@ -405,10 +334,11 @@ public class Admin {
 
     public static void clearVisitJSON() {
 
+        // Test feature just to clear VisitHistory.json for ease of access
+
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -417,19 +347,29 @@ public class Admin {
             visit.remove("time");
             visit.remove("customerName");
             visit.remove("shop");
+            visit.remove("caseLog");
 
             JSONArray visitDate = new JSONArray();
             JSONArray visitTime = new JSONArray();
             JSONArray visitName = new JSONArray();
             JSONArray visitShop = new JSONArray();
 
+            JSONObject caseLog = new JSONObject();
+            JSONArray caseDateArr = new JSONArray();
+            JSONArray caseTimeArr = new JSONArray();
+            JSONArray caseShopArr = new JSONArray();
+
+            caseLog.put("caseDateLog",caseDateArr);
+            caseLog.put("caseTimeLog",caseTimeArr);
+            caseLog.put("caseShopLog",caseShopArr);
+
             visit.put("date", visitDate);
             visit.put("time", visitTime);
             visit.put("customerName", visitName);
             visit.put("shop", visitShop);
+            visit.put("caseLog", caseLog);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\visitHistory.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                 fileWrite.write(visit.toJSONString());
                 fileWrite.flush();
@@ -450,10 +390,11 @@ public class Admin {
 
     public static void appendToMasterHistory(String loginPhone, String check_InDate, String check_InTime, String check_InShop) {
 
+        // add check-in details into visitHistory.json
+
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -463,8 +404,7 @@ public class Admin {
             JSONArray visitName = (JSONArray) visit.get("customerName");
             JSONArray visitShop = (JSONArray) visit.get("shop");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\customerData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
                 JSONObject customer = (JSONObject) obj2;
@@ -492,8 +432,7 @@ public class Admin {
                 visit.put("customerName", visitName);
                 visit.put("shop", visitShop);
 
-                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                        "\\res\\data\\visitHistory.json")) {
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                     fileWrite.write(visit.toJSONString());
                     fileWrite.flush();
@@ -524,8 +463,7 @@ public class Admin {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -545,8 +483,7 @@ public class Admin {
             visit.put("customerName", visitName);
             visit.put("shop", visitShop);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\visitHistory.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                 fileWrite.write(visit.toJSONString());
                 fileWrite.flush();
@@ -598,41 +535,17 @@ public class Admin {
 
     }
 
-    public static long findDifference(String beginDate, String endDate) {
+    public static String getRandomDate() throws java.text.ParseException { // For add30Visits()
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-        long timeDifference;
-        long minutesDifference = 0;
+        LocalDateTime timeVar = LocalDateTime.now();
+        DateTimeFormatter dateVar = DateTimeFormatter.ofPattern("dd-MMM-yyyy HH:mm:ss");
+        String formattedDate = timeVar.format(dateVar);
 
-        try {
+        LocalDateTime yesterdayDateTime = timeVar.minusDays(1);
+        String formattedYesterday = yesterdayDateTime.format(dateVar);
 
-            Date d1 = sdf.parse(beginDate);
-            Date d2 = sdf.parse(endDate);
-
-            int beforeAfter = d1.compareTo(d2);
-
-            if (beforeAfter == -1) {
-                timeDifference = d2.getTime() - d1.getTime();
-            } else if (beforeAfter == 1) {
-                timeDifference = d1.getTime() - d2.getTime();
-            } else {
-                timeDifference = 0;
-            }
-
-            minutesDifference = (timeDifference / (1000 * 60)) % 60;
-
-        } catch (java.text.ParseException e) {
-            e.printStackTrace();
-        }
-
-        return minutesDifference;
-
-    }
-
-    public static String getRandomDate() throws java.text.ParseException {
-
-        long startPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Jan-2021").getTime();
-        long endPoint = new SimpleDateFormat("dd-MMM-yyyy").parse("10-Dec-2020").getTime();
+        long startPoint = new SimpleDateFormat("dd-MMM-yyyy").parse(formattedYesterday).getTime();
+        long endPoint = new SimpleDateFormat("dd-MMM-yyyy").parse(formattedDate).getTime();
 
         Random randomTime = new Random();
         long timePeriod = endPoint - startPoint;
@@ -648,7 +561,7 @@ public class Admin {
 
     }
 
-    public static String getRandomString(ArrayList<String> paramArr) {
+    public static String getRandomString(ArrayList<String> paramArr) { // For add30Visits()
 
         Random r = new Random();
         int randomIndex = r.nextInt(paramArr.size());
@@ -656,13 +569,6 @@ public class Admin {
 
         return random;
 
-    }
-
-    public static void main(String[] args) {
-
-        Customer.initializeCustomerList();
-        Shop.initializeShopList();
-        viewMaster();
     }
 
 }
@@ -707,8 +613,7 @@ class Visit {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                "\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -782,6 +687,8 @@ class Visit {
 
 }
 
+// Member 2
+
 class Admin_Login {
 
     public static void adminLogin() {
@@ -833,12 +740,12 @@ class Admin_Login {
             reset.addActionListener(this);
             e.add(reset);
 
-            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\show.png")); // add dir
+            show=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
             show.setBounds(220,120,30,20);
             show.addActionListener(this);
             e.add(show);
 
-            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1\\res\\gui\\hide.png"));
+            hide=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\hide.png"));
             hide.setBounds(265,120,30,20);
             hide.addActionListener(this);
             e.add(hide);
@@ -862,8 +769,7 @@ class Admin_Login {
 
             // Parsing the contents of the JSON file
 
-            try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\IdeaProjects\\OOPDS_Assignment_1" +
-                    "\\res\\data\\loginData.json")) {
+            try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj = jsonParser.parse(reader);
                 JSONObject loginData = (JSONObject) obj;

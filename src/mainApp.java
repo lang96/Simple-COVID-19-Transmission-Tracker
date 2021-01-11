@@ -1,62 +1,26 @@
 import java.util.Scanner;
-import java.util.InputMismatchException;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-import javax.swing.text.View;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+// Member 1 & 2
 
 public class mainApp {
-
-    /* NOTE : DELETE PRIOR TO ZIPPING AND SUBMISSION
-
-    Program Requirements :
-
-    1. Never clear screen - Accomplished using line-by-line console action or GUI (preferably the latter) [/]
-
-    2. Pre-load with 5 customers (when the program starts) - Accomplished using json file to store data [~]
-
-    3. Pre-load with 4 shops - Accomplished using json file to store data [/]
-
-    4. Have a feature to add 30 random visits to the master visit history (random shops, random
-       visitors, time ranging from yesterday until current system time). Sort the master visit history
-       by date and time. - Accomplished with a function [/]
-
-    Final Submission Requirement :
-
-    1. Java source code. Make sure the code can be compiled and run. [/]
-
-    2. Java documentation (Javadoc) for a class. Choose a class that have methods with parameter
-    and return type. [X]
-
-    3. A file named Members.txt that lists down the group members’ ID, name, and contribution. [/]
-
-     */
-
-    // methods
 
     public static void main(String[] args) {
 
         Customer.initializeCustomerList(); // Initialize CustomerList at the start of program
         Shop.initializeShopList(); // Initialize ShopList at the start of program
+        Visit.initializeVisitList(); // Initialize VisitList at the start of program
+        Case.initializeCaseVisit(); // Initialize CaseList at the start of program
         menu.startMenu(); // Start of entire program's menu system
 
     }
 
 }
 
-class menu { // Shu & Arif
+class menu { // Member 1 & 2
 
     public static String loggedInPhone = "";
     public static String loggedInShop = "";
     public static boolean registerStat = false;
-    public static String currentCheck_InLog = "";
-    public static String lastFlagTime = "";
 
     public static void startMenu() {
 
@@ -89,9 +53,11 @@ class menu { // Shu & Arif
         System.out.println ("|_____|________________________________________________________________________________|");
         System.out.println ("|  2  |             Sign In                                                            |");
         System.out.println ("|_____|________________________________________________________________________________|");
+        System.out.println ("|  3  |             Exit to Main Menu                                                  |");
+        System.out.println ("|_____|________________________________________________________________________________|");
 
         System.out.println("\n");
-        System.out.print("Please enter your choice (1-2): ");
+        System.out.print("Please enter your choice (1-3): ");
 
         options.option2();
 
@@ -179,13 +145,6 @@ class menu { // Shu & Arif
 
 class options {
 
-    public static int checkInput() {
-
-        int opt = 0;
-
-        return opt;
-    }
-
     public static int confirmChoice() {
 
         int opt;
@@ -268,14 +227,13 @@ class options {
                 if (opt == 0) {
                     menu.startMenu();
                 } else {
-                    System.out.println("Thank you for choosing us!");
+                    System.out.println("Thank you for using our program and have a nice day!");
                     System.exit(0);
                 }
                 break;
 
             default:
-                System.err.println("\nUnrecognized option\n");
-                System.out.print("Please enter your choice (1-4): ");
+                System.err.println("\nUnrecognized option\n" + "Please enter your choice (1-4): \n");
                 option1();
 
         }
@@ -309,9 +267,19 @@ class options {
                 }
                 break;
 
+            case 3:
+                System.out.println("\nExit to Main Menu\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.loginMenu();
+                } else {
+                    menu.startMenu();
+                }
+                break;
+
             default:
                 System.err.println("\n\nUnrecognized option\n");
-                System.out.print("Please enter your choice (1-2): ");
+                System.out.print("Please enter your choice (1-3): ");
                 option2();
 
         }
@@ -331,10 +299,7 @@ class options {
                 if (opt == 0) {
                     menu.userMenu();
                 } else {
-                    Check_In.custCheck_In(menu.loggedInPhone); // works but flow interrupted by buffer
-                    String[] logSplit = menu.currentCheck_InLog.split(" ");
-                    //check_InFrame();
-                    //menu.lastFlagTime = "" + logSplit[logSplit.length];
+                    Check_In.custCheck_In(menu.loggedInPhone);
                 }
                 break;
 
