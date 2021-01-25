@@ -33,8 +33,8 @@ public class Admin {
 
         // This function allows admin to view the master visit history of the entire system.
 
+        Visit.initializeVisitList();
         List<Visit.DateItem> sortedHistory;
-
         sortedHistory = Visit.sortVisitHistory();
 
         String sortedDate;
@@ -90,7 +90,7 @@ public class Admin {
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -147,7 +147,7 @@ public class Admin {
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
 
@@ -338,7 +338,7 @@ public class Admin {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -369,7 +369,7 @@ public class Admin {
             visit.put("shop", visitShop);
             visit.put("caseLog", caseLog);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                 fileWrite.write(visit.toJSONString());
                 fileWrite.flush();
@@ -394,7 +394,7 @@ public class Admin {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -404,7 +404,7 @@ public class Admin {
             JSONArray visitName = (JSONArray) visit.get("customerName");
             JSONArray visitShop = (JSONArray) visit.get("shop");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
                 JSONObject customer = (JSONObject) obj2;
@@ -432,7 +432,7 @@ public class Admin {
                 visit.put("customerName", visitName);
                 visit.put("shop", visitShop);
 
-                try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                     fileWrite.write(visit.toJSONString());
                     fileWrite.flush();
@@ -463,7 +463,7 @@ public class Admin {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -483,7 +483,7 @@ public class Admin {
             visit.put("customerName", visitName);
             visit.put("shop", visitShop);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                 fileWrite.write(visit.toJSONString());
                 fileWrite.flush();
@@ -611,9 +611,13 @@ class Visit {
     // accompanying methods
     public static void initializeVisitList() { // At the start of program, the VisitList is initialized from JSON file
 
+        if (!VisitList.isEmpty()) {
+            VisitList.clear();
+        }
+
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -740,12 +744,12 @@ class Admin_Login {
             reset.addActionListener(this);
             e.add(reset);
 
-            show=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
+            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
             show.setBounds(220,120,30,20);
             show.addActionListener(this);
             e.add(show);
 
-            hide=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\hide.png"));
+            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\hide.png"));
             hide.setBounds(265,120,30,20);
             hide.addActionListener(this);
             e.add(hide);
@@ -769,7 +773,7 @@ class Admin_Login {
 
             // Parsing the contents of the JSON file
 
-            try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+            try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj = jsonParser.parse(reader);
                 JSONObject loginData = (JSONObject) obj;

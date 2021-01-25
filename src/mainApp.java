@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 // Member 1 & 2
@@ -11,6 +12,8 @@ public class mainApp {
         Visit.initializeVisitList(); // Initialize VisitList at the start of program
         Case.initializeCaseVisit(); // Initialize CaseList at the start of program
         menu.startMenu(); // Start of entire program's menu system
+
+        //Admin.clearVisitJSON();
 
     }
 
@@ -145,20 +148,26 @@ class menu { // Member 1 & 2
 
 class options {
 
+    private static String msgConfirm = "Would you like to proceed or return to the previous menu?\n" + "To proceed, enter 9.\n" +
+            "If you wish to return, enter 0.\n";
+    private static String msgAfterConfirm = "\nWould you like to return to the previous menu or sign out and quit to the start menu?\n" +
+            "To return to the previous menu, enter 9.\n" + "If you wish to quit to the start menu, enter 0.\n";
+    private static String msgMenu = "";
+
+
     public static int confirmChoice() {
 
         int opt;
-        Scanner s = new Scanner(System.in);
 
-        System.out.println("Would you like to proceed or return to the previous menu?\n");
-        System.out.println("To proceed, enter 9.");
-        System.out.println("If you wish to return, enter 0.\n");
-        opt = s.nextInt();
+        do {
+            System.out.println(msgConfirm);
+            opt = checkInputMismatch();
 
-        while (opt != 0 && opt != 9) {
-            System.err.println("\nUnrecognized option!\n");
-            confirmChoice();
-        }
+            if (opt != 0 && opt != 9) {
+                System.err.println("\nUnrecognized option!\n");
+                System.out.println(msgConfirm);
+            }
+        } while (opt != 0 && opt != 9);
 
         return opt;
 
@@ -167,17 +176,40 @@ class options {
     public static int afterChoice() {
 
         int opt;
-        Scanner s = new Scanner(System.in);
 
-        System.out.println("\nWould you like to return to the previous menu or sign out and quit to the start menu?\n");
-        System.out.println("To return to the previous menu, enter 9.");
-        System.out.println("If you wish to quit to the start menu, enter 0.\n");
-        opt = s.nextInt();
+        do {
+            System.out.println(msgAfterConfirm);
+            opt = checkInputMismatch();
 
-        while (opt != 0 && opt != 9) {
-            System.err.println("\nUnrecognized option!\n");
-            confirmChoice();
-        }
+            if (opt != 0 && opt != 9) {
+                System.err.println("\nUnrecognized option!\n");
+                System.out.println(msgAfterConfirm);
+            }
+        } while (opt != 0 && opt != 9);
+
+        return opt;
+
+    }
+
+    public static int checkInputMismatch() {
+
+        int opt = 0;
+        Scanner input = new Scanner(System.in);
+
+        do {
+            try {
+                opt = input.nextInt();
+
+                if (opt < 0) {
+                    System.err.println("\nInvalid input!\n");
+                }
+
+            } catch (InputMismatchException e) {
+                System.err.println("\nInvalid input!\n");
+                input.nextLine(); // clears the buffer
+                opt = checkInputMismatch();
+            }
+        } while (opt < 0);
 
         return opt;
 
@@ -185,9 +217,11 @@ class options {
 
     public static void option1() {
 
-        Scanner input = new Scanner(System.in);
-        int opt = -1;
-        switch (input.nextInt()) {
+        int opt;
+        int choice;
+        choice = checkInputMismatch();
+
+        switch (choice) {
 
             case 1:
                 System.out.println("\nLaunch as Customer\n");
@@ -242,10 +276,11 @@ class options {
 
     public static void option2() {
 
-        Scanner input2 = new Scanner(System.in);
-        int opt = -1;
+        int opt;
+        int choice;
+        choice = checkInputMismatch();
 
-        switch (input2.nextInt()) {
+        switch (choice) {
 
             case 1:
                 System.out.println("\nRegister Account\n");
@@ -288,10 +323,11 @@ class options {
 
     public static void option3() {
 
-        Scanner input3 = new Scanner(System.in);
-        int opt = -1;
+        int opt;
+        int choice;
+        choice = checkInputMismatch();
 
-        switch (input3.nextInt()) {
+        switch (choice) {
 
             case 1:
                 System.out.println("\nShop Check-In\n");
@@ -344,9 +380,11 @@ class options {
 
     public static void option4() {
 
-        Scanner input4 = new Scanner(System.in);
-        int opt = -1;
-        switch (input4.nextInt()) {
+        int opt;
+        int choice;
+        choice = checkInputMismatch();
+
+        switch (choice) {
 
             case 1:
                 System.out.println("\nView Status\n");
@@ -379,79 +417,80 @@ class options {
 
     public static void option5() {
 
-        Scanner input5 = new Scanner(System.in);
-        int opt = -1;
+        int opt;
+        int choice;
+        choice = checkInputMismatch();
 
-                switch (input5.nextInt()) {
+        switch (choice) {
 
-                    case 1:
-                        System.out.println("\nView All Customers\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            Admin.viewCustomer();
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\nView All Shops\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            Admin.viewShop();
-                        }
-                        break;
-
-                    case 3:
-                        System.out.println("\nView Master History\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            Admin.viewMaster();
-                        }
-                        break;
-
-                    case 4:
-                        System.out.println("\nFlag Customer\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            Admin.flagCustomer();
-                        }
-                        break;
-
-                    case 5:
-                        System.out.println("\nAdd 30 Random Visits\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            Admin.add30Visits();
-                        }
-                        break;
-
-                    case 6:
-                        System.out.println("\nSign Out\n");
-                        opt = confirmChoice();
-                        if (opt == 0) {
-                            menu.adminMenu();
-                        } else {
-                            menu.startMenu();
-                        }
-                        break;
-
-                    default:
-                        System.err.println("\n\nUnrecognized option!\n");
-                        System.out.print("Please enter your choice (1-6): ");
-
-                        option5();
-
+            case 1:
+                System.out.println("\nView All Customers\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    Admin.viewCustomer();
                 }
+                break;
 
-            }
+            case 2:
+                System.out.println("\nView All Shops\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    Admin.viewShop();
+                }
+                break;
+
+            case 3:
+                System.out.println("\nView Master History\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    Admin.viewMaster();
+                }
+                break;
+
+            case 4:
+                System.out.println("\nFlag Customer\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    Admin.flagCustomer();
+                }
+                break;
+
+            case 5:
+                System.out.println("\nAdd 30 Random Visits\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    Admin.add30Visits();
+                }
+                break;
+
+            case 6:
+                System.out.println("\nSign Out\n");
+                opt = confirmChoice();
+                if (opt == 0) {
+                    menu.adminMenu();
+                } else {
+                    menu.startMenu();
+                }
+                break;
+
+            default:
+                System.err.println("\n\nUnrecognized option!\n");
+                System.out.print("Please enter your choice (1-6): ");
+
+                option5();
 
         }
+
+    }
+
+}

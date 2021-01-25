@@ -173,7 +173,7 @@ public class Shop {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject shopData = (JSONObject) obj;
@@ -211,7 +211,7 @@ public class Shop {
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject shopData = (JSONObject) obj;
@@ -245,7 +245,7 @@ public class Shop {
             shopData.put("status",shopStatusArr);
             shopData.put("manager",shopManagerArr);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\shopData.json")) {
 
                 fileWrite.write(shopData.toJSONString());
                 fileWrite.flush();

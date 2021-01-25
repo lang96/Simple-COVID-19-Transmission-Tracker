@@ -99,7 +99,7 @@ public class Customer { // Member 1 & 2
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -109,7 +109,7 @@ public class Customer { // Member 1 & 2
             JSONArray phoneNumArr = (JSONArray) customerData.get("phoneNum");
             JSONArray statusArr = (JSONArray)  customerData.get("status");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
                 JSONObject login = (JSONObject) obj2;
@@ -170,7 +170,7 @@ public class Customer { // Member 1 & 2
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -195,7 +195,7 @@ public class Customer { // Member 1 & 2
             customerData.put("status", statusArr);
 
             //Write JSON file
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 fileWrite.write(customerData.toJSONString());
                 fileWrite.flush();
@@ -212,7 +212,7 @@ public class Customer { // Member 1 & 2
             f.printStackTrace();
         }
 
-        try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+        try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
             Object obj2 = jsonParser.parse(reader2);
 
@@ -245,7 +245,7 @@ public class Customer { // Member 1 & 2
             login.put("customer",loginData);
 
             //Write JSON file
-            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 fileWrite2.write(login.toJSONString());
                 fileWrite2.flush();
@@ -270,7 +270,7 @@ public class Customer { // Member 1 & 2
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerData = (JSONObject) obj;
@@ -280,7 +280,7 @@ public class Customer { // Member 1 & 2
             customerData.remove("phoneNum");
             customerData.remove("status");
 
-            try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+            try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj2 = jsonParser.parse(reader2);
 
@@ -315,7 +315,7 @@ public class Customer { // Member 1 & 2
                 login.put("admin", adminData);
                 login.put("customer", customerLogin);
 
-                try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+                try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                     fileWrite.write(login.toJSONString());
                     fileWrite.flush();
@@ -356,7 +356,7 @@ public class Customer { // Member 1 & 2
             customerData.put("phoneNum",phoneNumArr);
             customerData.put("status",statusArr);
 
-            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+            try (FileWriter fileWrite2 = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                 fileWrite2.write(customerData.toJSONString());
                 fileWrite2.flush();
@@ -505,6 +505,9 @@ class Register { // Member 2
             String pass = t4.getText();
             String status = Customer.defStatus;
             int len = phoneNum.length();
+            int fNLen = fName.length();
+            int lNLen = lName.length();
+            int passLen = pass.length();
 
             String message = "Welcome, " + fName + "!\n" + "Your account is successfully created!";
 
@@ -515,11 +518,31 @@ class Register { // Member 2
                     if (len != 10 && len != 11) {
                         JOptionPane.showMessageDialog(submit, "Enter a valid mobile number!");
                     } else {
-                        Customer.appendToCustomerList(fName, lName, phoneNum, pass);
-                        JOptionPane.showMessageDialog(submit, message);
-                        menu.registerStat = true;
-                        dispose();
-                        menu.loginMenu();
+
+                        if (fNLen < 1) {
+                            JOptionPane.showMessageDialog(submit, "Enter your first name!");
+                        } else {
+
+                            if (lNLen < 1) {
+                                JOptionPane.showMessageDialog(submit, "Enter your last name!");
+                            } else {
+
+                                if (passLen < 1) {
+                                    JOptionPane.showMessageDialog(submit, "Enter your password!");
+                                } else {
+
+                                    Customer.appendToCustomerList(fName, lName, phoneNum, pass);
+                                    JOptionPane.showMessageDialog(submit, message);
+                                    menu.registerStat = true;
+                                    dispose();
+                                    menu.loginMenu();
+
+                                }
+
+                            }
+
+                        }
+
                     }
 
                 }
@@ -599,12 +622,12 @@ class Login { // Member 1 & 2
             reset.addActionListener(this);
             e.add(reset);
 
-            show=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
+            show=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\show.png")); // add dir
             show.setBounds(220,120,30,20);
             show.addActionListener(this);
             e.add(show);
 
-            hide=new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\hide.png"));
+            hide=new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\hide.png"));
             hide.setBounds(265,120,30,20);
             hide.addActionListener(this);
             e.add(hide);
@@ -629,7 +652,7 @@ class Login { // Member 1 & 2
 
             // Parsing the contents of the JSON file
 
-            try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
+            try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\loginData.json")) {
 
                 Object obj = jsonParser.parse(reader);
                 JSONObject loginData = (JSONObject) obj;
@@ -652,7 +675,7 @@ class Login { // Member 1 & 2
 
                 }
 
-                try (FileReader reader2 = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
+                try (FileReader reader2 = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\customerData.json")) {
 
                     Object obj2 = jsonParser.parse(reader2);
 
@@ -762,22 +785,22 @@ class Check_In { // Member 1 & 2
             Title.setBounds(80, 30, 300, 20);
             e.add(Title);
 
-            Tesco = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\tesco.jpg"));
+            Tesco = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\tesco.jpg"));
             Tesco.setBounds(50, 80, 140, 35);
             Tesco.addActionListener(this);
             e.add(Tesco);
 
-            Giant = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\Giant.jpg"));
+            Giant = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\Giant.jpg"));
             Giant.setBounds(200, 80, 140, 35);
             Giant.addActionListener(this);
             e.add(Giant);
 
-            Econsave = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\Econsave.png"));
+            Econsave = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\Econsave.png"));
             Econsave.setBounds(50, 150, 140, 35);
             Econsave.addActionListener(this);
             e.add(Econsave);
 
-            Jaya = new JButton(new ImageIcon("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\gui\\jaya.jpg"));
+            Jaya = new JButton(new ImageIcon("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\gui\\jaya.jpg"));
             Jaya.setBounds(200, 150, 140, 35);
             Jaya.addActionListener(this);
             e.add(Jaya);
@@ -925,7 +948,7 @@ class ViewHistory { // Member 1
 
         // Parsing the contents of the JSON file
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject customerVisit = (JSONObject) obj;
@@ -1052,7 +1075,7 @@ class Case { // Member 1
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject logs = (JSONObject) obj;
@@ -1196,7 +1219,7 @@ class autoFlag { // Member 1
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
@@ -1216,7 +1239,7 @@ class autoFlag { // Member 1
 
             visit.put("caseLog", caseLog);
 
-            try (FileWriter fileWrite = new FileWriter("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+            try (FileWriter fileWrite = new FileWriter("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
                 fileWrite.write(visit.toJSONString());
                 fileWrite.flush();
@@ -1449,7 +1472,7 @@ class autoFlag { // Member 1
 
         JSONParser jsonParser = new JSONParser();
 
-        try (FileReader reader = new FileReader("C:\\Users\\_YourUserName_\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
+        try (FileReader reader = new FileReader("C:\\Users\\clubberlang96\\Desktop\\SourceCode\\res\\data\\visitHistory.json")) {
 
             Object obj = jsonParser.parse(reader);
             JSONObject visit = (JSONObject) obj;
